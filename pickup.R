@@ -196,6 +196,18 @@ Pickup$methods(
     
   }
 )
+## Accessor getUlRawPeak
+Pickup$methods(
+  getIndRawPeak = function() {
+    if (length(indRawPeak)>0) {
+      return (indRawPeak)
+    } else {
+      getInd() #Yes bad design, needs refactoring
+      return (indRawPeak)
+    }
+    
+  }
+)
 
 
 ##
