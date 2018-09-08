@@ -297,7 +297,7 @@ Pickup$methods(
       
       
       ylim(-10, 6) +
-      ggtitle(paste(aPickup$manuf, aPickup$name), Integrated) +
+      ggtitle(paste(aPickup$manuf, aPickup$name), "Integrated") +
       xlab("Frequency /Hz") +
       ylab("Magnetude /dB (-20db/Decade)")
     return(myPlot)
