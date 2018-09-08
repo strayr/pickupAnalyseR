@@ -60,7 +60,13 @@ Pickup <- setRefClass(
     #Set to -1 if not calculated or able to be calculated 
     #Setting data tables and get* methods attempt calculation
     cCap = "numeric", #use getCap()
-    cInd = "numeric"  #use getInd()
+    cInd = "numeric",  #use getInd()
+    
+    
+    #Store the peaks from the raw plots, this is calculated and cached data so use the accessors
+    indRawPeak = "list", #use getIndRawPeak()
+    ldRawPeak = "list", #use getLdRawPeak()
+    ulRawPeak = "list" #use getUlRawPeak()
     
     
   )
@@ -166,11 +172,39 @@ Pickup$methods(
     } else {
       ulF=priSimplePeak(unloaded)
       cCap <<- (1/(((2 * pi * ulF$freq) ^ 2) * getInd())) * (10^12) - defaultProbeCap
+      ulRawPeak<<-ulF
       return (cCap)
     }
     
   }
 )
+
+## Accessor getLdRawPeak
+Pickup$methods(
+  getLdRawPeak = function() {
+    if (length(ldRawPeak)>0) {
+      return (ldRawPeak)
+    } else {
+      ldRawPeak<<-priSimplePeak(loaded)
+      return (ldRawPeak)
+    }
+    
+  }
+)
+
+## Accessor getUlRawPeak
+Pickup$methods(
+  getUlRawPeak = function() {
+    if (length(ulRawPeak)>0) {
+      return (ulRawPeak)
+    } else {
+      getCap()
+      return (ldRawPeak)
+    }
+    
+  }
+)
+
 
 ##
 # Data massaging to make uniqe columns when we merge and melt
@@ -341,7 +375,6 @@ Pickup$methods(
   }
 )
 
-
 ##
 # This really DOES NOT WORK
 # Pickup$methods (
@@ -357,4 +390,3 @@ Pickup$methods(
 #     return(data)
 #   }
 # )
-# 
