@@ -341,6 +341,10 @@ Pickup$methods(
       geom_vline(xintercept = tail(getULPeaks()[,"Freq"], n=1), colour = "blue", linetype="dashed")+
       geom_vline(xintercept = getULCutoff(), colour = "blue", linetype="dashed")+
       
+      geom_vline(xintercept = getLdRawPeak()$freq, colour="red")+
+      geom_vline(xintercept = getUlRawPeak()$freq, colour="blue")+
+      geom_vline(xintercept = getIndRawPeak()$freq, colour="green")+
+      
       
       
       #ylim(-10, 6) +
