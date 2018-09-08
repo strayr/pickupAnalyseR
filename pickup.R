@@ -141,15 +141,6 @@ Pickup$methods(
 )
 
 
-# Pickup$methods(
-#   assumeTrue = function() {
-#     ldHasEddy <<- TRUE
-#     ldHasResonance <<- TRUE
-#     ulHasEddy <<- TRUE
-#     ulHasResonance <<- TRUE
-#   }
-# )
-
 ## Acessor getInd for variable cIND
 Pickup$methods(
   getInd = function() {
@@ -158,6 +149,7 @@ Pickup$methods(
     } else {
       inF=priSimplePeak(induction)
       cInd <<- 1 / (((2 * pi * inF$freq) ^ 2) * (10^-8))
+      indRawPeak<<-inF
       return (cInd)
     }
     
@@ -374,19 +366,3 @@ Pickup$methods(
     return(myPlot)
   }
 )
-
-##
-# This really DOES NOT WORK
-# Pickup$methods (
-#   getDatasheet = function() {
-#     data=paste(
-#       "Calculated Inductance:",
-#       prettyNum(getInd(), format = "fg", digits = 3),
-#       "H\n",
-#       "Calculated Capacitance:", prettyNum(getCap(), format = "fg", digits = 3),"pF\n",
-#       #LDCutoff #ULCutoff #LDPeaks #ULPeaks
-#       "Loaded:\nResonant Peak:", getLDPeaks()
-#     )
-#     return(data)
-#   }
-# )
