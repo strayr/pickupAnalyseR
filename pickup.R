@@ -1,11 +1,15 @@
 #pickup.R
 
 
-## Ok let's make a formal model of af a pickup as a reference class. I want
+## Ok let's make a model of af a pickup as a reference class. I want
 #class methods available so I can process with class methods and have reference
 #behaviour so a method causes the the object to do a BIG computation and store
 #the result rather than risk repeated recalculation or copy-on-write with large
 #data.
+
+#TODO internalise peak tabulation
+#TODO Make bias gain available
+
 
 #External packages
 #For Graphing
@@ -13,10 +17,10 @@ library(ggplot2)
 library(scales)
 library(ggpmisc)
 
-#For melting data
-library(purrr)
+#For melting data- currently not used
+#library(purrr)
 
-#library(peakPick)
+#Using a finance library for peak detecton
 library(quantmod)
 
 #I have some packages of useful functions that I should probably internalise here
@@ -61,19 +65,6 @@ Pickup <- setRefClass(
     
   )
 ) #End pickup def
-
-
-# Pickup$methods (
-#   initialize= function() {
-#    }
-# )
-# 
-# Pickup$methods (
-#   initialize= function(...) {
-#     print (tableBase)
-#     tableBase <<- tableBase
-#   }
-# )
 
 
 # A class method for internal use to identify peaks
@@ -248,6 +239,40 @@ Pickup$methods(
       geom_smooth(mapping = aes(x = Freq , y = IntMag) , span = smoothing) +
       geom_line(data = unloaded, mapping = aes(x = Freq , y = IntMag)) +
       geom_smooth(
+        data = unloaded,
+        mapping = aes(x = Freq , y = IntMag) ,
+        span = smoothing,
+        colour = "red"
+      ) +
+      
+      geom_vline(xintercept = tail(getLDPeaks()[,"Freq"], n=1), colour = "red")+
+      geom_vline(xintercept = getLDCutoff(), colour = "red")+
+      geom_vline(xintercept = tail(getULPeaks()[,"Freq"], n=1), colour = "blue")+
+      geom_vline(xintercept = getULCutoff(), colour = "blue")+
+      
+      
+      
+      ylim(-10, 6) +
+      ggtitle(paste(aPickup$manuf, aPickup$name)) +
+      xlab("Frequency /Hz") +
+      ylab("Magnetude /dB (-20db/Decade)")
+    return(myPlot)
+  }
+)
+
+Pickup$methods(
+  getPlot = function(){
+    myPlot = ggplot (data = unloaded) +
+      scale_x_log10(minor_breaks = log10_minor_break()) +
+      theme(
+        panel.grid.major.x = element_line(size = 0.1),
+        panel.grid.minor.x = element_line(size = 0.2)
+      ) +
+      
+      geom_line(mapping = aes(x = Freq , y = IntMag)) +
+      geom_smooth(mapping = aes(x = Freq , y = IntMag) , span = smoothing) +
+      geom_line(data = unloaded, mapping = aes(x = Freq , y = IntMag)) +
+      geom_smooth(
         data = aPickup$loaded,
         mapping = aes(x = Freq , y = IntMag) ,
         span = smoothing,
@@ -268,6 +293,54 @@ Pickup$methods(
     return(myPlot)
   }
 )
+
+# getRawPlot
+# plots unintegrated data for verification of peak detection
+#
+Pickup$methods(
+  getRawPlot = function(){
+    myPlot = ggplot (data = unloaded) +
+      scale_x_log10(minor_breaks = log10_minor_break()) +
+      theme(
+        panel.grid.major.x = element_line(size = 0.1),
+        panel.grid.minor.x = element_line(size = 0.2)
+      ) +
+      
+      geom_line(mapping = aes(x = Freq , y = Mag)) +
+      geom_smooth(mapping = aes(x = Freq , y = Mag) , span = smoothing) +
+      
+      geom_line(data = induction, mapping = aes(x = Freq , y = Mag)) +
+      geom_smooth(
+        data = induction,
+        mapping = aes(x = Freq , y = Mag) ,
+        span = smoothing,
+        colour = "green"
+      ) +
+      
+      geom_line(data = loaded, mapping = aes(x = Freq , y = Mag)) +
+      geom_smooth(
+        data = loaded,
+        mapping = aes(x = Freq , y = Mag) ,
+        span = smoothing,
+        colour = "red"
+      ) +
+      
+      #Dashed data from integrated plot
+      geom_vline(xintercept = tail(getLDPeaks()[,"Freq"], n=1), colour = "red", linetype="dashed")+
+      geom_vline(xintercept = getLDCutoff(), colour = "red", linetype="dashed")+
+      geom_vline(xintercept = tail(getULPeaks()[,"Freq"], n=1), colour = "blue", linetype="dashed")+
+      geom_vline(xintercept = getULCutoff(), colour = "blue", linetype="dashed")+
+      
+      
+      
+      #ylim(-10, 6) +
+      ggtitle(paste(aPickup$manuf, aPickup$name), "Raw") +
+      xlab("Frequency /Hz") +
+      ylab("Magnetude /dB")
+    return(myPlot)
+  }
+)
+
 
 ##
 # This really DOES NOT WORK
