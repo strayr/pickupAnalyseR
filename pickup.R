@@ -252,39 +252,7 @@ Pickup$methods(
 ###
 # We can build in some ggplot defaults
 
-Pickup$methods(
-  getPlot = function(){
-    myPlot = ggplot (data = unloaded) +
-      scale_x_log10(minor_breaks = log10_minor_break()) +
-      theme(
-        panel.grid.major.x = element_line(size = 0.1),
-        panel.grid.minor.x = element_line(size = 0.2)
-      ) +
-      
-      geom_line(mapping = aes(x = Freq , y = IntMag)) +
-      geom_smooth(mapping = aes(x = Freq , y = IntMag) , span = smoothing) +
-      geom_line(data = unloaded, mapping = aes(x = Freq , y = IntMag)) +
-      geom_smooth(
-        data = unloaded,
-        mapping = aes(x = Freq , y = IntMag) ,
-        span = smoothing,
-        colour = "red"
-      ) +
-      
-      geom_vline(xintercept = tail(getLDPeaks()[,"Freq"], n=1), colour = "red")+
-      geom_vline(xintercept = getLDCutoff(), colour = "red")+
-      geom_vline(xintercept = tail(getULPeaks()[,"Freq"], n=1), colour = "blue")+
-      geom_vline(xintercept = getULCutoff(), colour = "blue")+
-      
-      
-      
-      ylim(-10, 6) +
-      ggtitle(paste(aPickup$manuf, aPickup$name)) +
-      xlab("Frequency /Hz") +
-      ylab("Magnetude /dB (-20db/Decade)")
-    return(myPlot)
-  }
-)
+
 
 Pickup$methods(
   getPlot = function(){
