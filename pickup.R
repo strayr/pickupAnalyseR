@@ -190,8 +190,8 @@ Pickup$methods(
     if (length(ulRawPeak)>0) {
       return (ulRawPeak)
     } else {
-      getCap()
-      return (ldRawPeak)
+      getCap() #Yes bad design, needs refactoring
+      return (ulRawPeak)
     }
     
   }
