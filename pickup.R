@@ -8,10 +8,14 @@
 #data.
 
 #External packages
+#For Graphing
 library(ggplot2)
 library(scales)
-library(purrr)
 library(ggpmisc)
+
+#For melting data
+library(purrr)
+
 #library(peakPick)
 library(quantmod)
 
@@ -233,7 +237,7 @@ Pickup$methods(
 
 Pickup$methods(
   getPlot = function(){
-    myPlot = ggplot (data = loaded) +
+    myPlot = ggplot (data = unloaded) +
       scale_x_log10(minor_breaks = log10_minor_break()) +
       theme(
         panel.grid.major.x = element_line(size = 0.1),
@@ -244,16 +248,16 @@ Pickup$methods(
       geom_smooth(mapping = aes(x = Freq , y = IntMag) , span = smoothing) +
       geom_line(data = unloaded, mapping = aes(x = Freq , y = IntMag)) +
       geom_smooth(
-        data = aPickup$unloaded,
+        data = aPickup$loaded,
         mapping = aes(x = Freq , y = IntMag) ,
         span = smoothing,
         colour = "red"
       ) +
       
-      geom_vline(xintercept = tail(getLDPeaks()[,"Freq"], n=1), colour = "blue")+
-      geom_vline(xintercept = getLDCutoff(), colour = "blue")+
-      geom_vline(xintercept = tail(getULPeaks()[,"Freq"], n=1), colour = "red")+
-      geom_vline(xintercept = getULCutoff(), colour = "red")+
+      geom_vline(xintercept = tail(getLDPeaks()[,"Freq"], n=1), colour = "red")+
+      geom_vline(xintercept = getLDCutoff(), colour = "red")+
+      geom_vline(xintercept = tail(getULPeaks()[,"Freq"], n=1), colour = "blue")+
+      geom_vline(xintercept = getULCutoff(), colour = "blue")+
       
       
       
@@ -265,17 +269,19 @@ Pickup$methods(
   }
 )
 
-Pickup$methods (
-  getDatasheet = function() {
-    data=paste(
-      "Calculated Inductance:",
-      prettyNum(getInd(), format = "fg", digits = 3),
-      "H\n",
-      "Calculated Capacitance:", prettyNum(getCap(), format = "fg", digits = 3),"pF\n",
-      #LDCutoff #ULCutoff #LDPeaks #ULPeaks
-      "Loaded:\nResonant Peak:", getLDPeaks()
-    )
-    return(data)
-  }
-)
-
+##
+# This really DOES NOT WORK
+# Pickup$methods (
+#   getDatasheet = function() {
+#     data=paste(
+#       "Calculated Inductance:",
+#       prettyNum(getInd(), format = "fg", digits = 3),
+#       "H\n",
+#       "Calculated Capacitance:", prettyNum(getCap(), format = "fg", digits = 3),"pF\n",
+#       #LDCutoff #ULCutoff #LDPeaks #ULPeaks
+#       "Loaded:\nResonant Peak:", getLDPeaks()
+#     )
+#     return(data)
+#   }
+# )
+# 
