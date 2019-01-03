@@ -38,7 +38,9 @@ Pickup <- setRefClass(
   fields = list(
     name = "character",
     manuf = "character",
-    
+    hasLoaded = "logical",
+    hasUnloaded = "logical",
+    hasInd = "logical",
     tableBase = "character",
     smoothing="numeric",
     
@@ -132,9 +134,15 @@ Pickup$methods(
     ul <- paste0(fileStem, "-UL.csv")
     ld <- paste0(fileStem, "-LD.csv")
     it <- paste0(fileStem, "-IT.csv")
-    setLoaded(read.table(file = ld, sep=',', header = TRUE))
-    setInduction(read.table(file = it, sep=',', header = TRUE))
-    setUnloaded(read.table(file = ul, sep=',', header = TRUE))
+    if(hasLoaded){
+      setLoaded(read.table(file = ld, sep=',', header = TRUE))
+    }
+    if(hasInd){
+      setInduction(read.table(file = it, sep=',', header = TRUE))
+    }
+    if(hasUnloaded){
+      setUnloaded(read.table(file = ul, sep=',', header = TRUE))
+    }
     smoothing<<-defaultSmoothing
    
   }
