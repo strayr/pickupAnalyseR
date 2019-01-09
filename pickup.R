@@ -90,8 +90,8 @@ Pickup$methods(
 
 Pickup$methods(
   setLoaded = function(x) {
-    x<-removeExcess(x)
-    names(x)<-shortNames(x)
+    #x<-removeExcess(x)
+    #names(x)<-shortNames(x)
     x<-processBode(x)
     loaded <<- x
   }
@@ -101,8 +101,8 @@ Pickup$methods(
 
 Pickup$methods(
   setUnloaded = function(x) {
-    x<-removeExcess(x)
-    names(x)<-shortNames(x)
+    # x<-removeExcess(x)
+    # names(x)<-shortNames(x)
     x<-processBode(x)
     unloaded <<- x
     #We've just invalidated our calculation and can't garantee having Induction data so reset
@@ -153,6 +153,9 @@ Pickup$methods(
 ## Acessor getInd for variable cIND
 Pickup$methods(
   getInd = function() {
+    if () {
+      
+    }
     if (cInd>0) {
       return (cInd)
     } else {

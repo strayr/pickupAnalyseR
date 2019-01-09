@@ -17,6 +17,7 @@ removeExcess <- function(bodeData){
 
 processBode <- function (bodeData, fMin=100, fMax=500, gain=0.0) {
   #Apply -20dB/decade slope
+  print(head(bodeData))
   bodeData$IntMag <- (bodeData$Mag - 20 * log10(bodeData$Freq) )
   
   
