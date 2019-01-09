@@ -38,10 +38,10 @@ Pickup <- setRefClass(
   fields = list(
     name = "character",
     manuf = "character",
-    hasLoaded = "logical",
-    hasUnloaded = "logical",
-    hasInd = "logical",
-    tableBase = "character",
+    #hasLoaded = "logical",     #Not using
+    #hasUnloaded = "logical",   #Not Using
+    #hasInd = "logical",        #Not Using
+    #tableBase = "character",
     smoothing="numeric",
     
     #The big unweildy data from datalogger or SPICE
@@ -127,26 +127,27 @@ Pickup$methods(
 )
 
 ##
-# This assumes the bode plots are in CSV files with systemic prefixes
+# This assumes the bode plots are in CSV files with systemic prefixes 
+# this has been shifted to data-specific classes derived from this 
 
-Pickup$methods(
-  setFromFiles = function(fileStem=tableBase, schema="SYSCOMP") {
-    ul <- paste0(fileStem, "-UL.csv")
-    ld <- paste0(fileStem, "-LD.csv")
-    it <- paste0(fileStem, "-IT.csv")
-    if(hasLoaded){
-      setLoaded(read.table(file = ld, sep=',', header = TRUE))
-    }
-    if(hasInd){
-      setInduction(read.table(file = it, sep=',', header = TRUE))
-    }
-    if(hasUnloaded){
-      setUnloaded(read.table(file = ul, sep=',', header = TRUE))
-    }
-    smoothing<<-defaultSmoothing
-   
-  }
-)
+# Pickup$methods(
+#   setFromFiles = function(fileStem=tableBase, schema="SYSCOMP") {
+#     ul <- paste0(fileStem, "-UL.csv")
+#     ld <- paste0(fileStem, "-LD.csv")
+#     it <- paste0(fileStem, "-IT.csv")
+#     if(hasLoaded){
+#       setLoaded(read.table(file = ld, sep=',', header = TRUE))
+#     }
+#     if(hasInd){
+#       setInduction(read.table(file = it, sep=',', header = TRUE))
+#     }
+#     if(hasUnloaded){
+#       setUnloaded(read.table(file = ul, sep=',', header = TRUE))
+#     }
+#     smoothing<<-defaultSmoothing
+#    
+#   }
+# )
 
 
 ## Acessor getInd for variable cIND

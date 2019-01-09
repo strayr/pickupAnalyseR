@@ -5,7 +5,7 @@
 
 ##
 # Import needed libraries
-source('pickup.R')
+source('sysCompPickup.R')
 
 
 
@@ -15,11 +15,11 @@ source('pickup.R')
 
 #I'm using my own pickup as the default for this template.
 
-aPickup=Pickup(name = "P22",
+aPickup=SysCompPickup(name = "P22",
                manuf = "Straylight",
-               mDCR = 8.08,
+               mDCR = 8.08, 
                tableBase='SingleAnalysis/SampleData/P22-A2')
-aPickup$setFromFiles()
+#aPickup$autoSetFromFiles()
 
 print (aPickup$getRawPlot())
 print (aPickup$getPlot())
