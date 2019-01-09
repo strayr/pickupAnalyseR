@@ -114,7 +114,7 @@ Pickup$methods(
 Pickup$methods(
   setInduction = function(x) {
     x<-removeExcess(x)
-    names(x)<-shortNames(x)
+    names(x)<-shortNames(x) # should really be shortNames(names(x)) and done pickup specific
     x<-processBode(x)
     induction <<- x
     #We've just invalidated our calculation and can't garantee having capacitance data so reset
