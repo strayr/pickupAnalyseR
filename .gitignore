@@ -4,7 +4,6 @@
 .Ruserdata
 *.png
 *.pdf
-GuitarAnalysisData
 ScopeData.Rproj
 PrivateAnalysis
 csv

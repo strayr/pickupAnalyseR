@@ -7,8 +7,9 @@ datafolder<-"pickupAnalyseR/SingleAnalysis/SampleData"
 
 ##
 # Import needed libraries
+
 libfolder<-"pickupAnalyseR"
-source(paste(libfolder, 'pickup.R', sep="/"))
+source(paste(libfolder, 'sysCompPickup.R', sep="/"))
 
 
 
@@ -18,12 +19,18 @@ source(paste(libfolder, 'pickup.R', sep="/"))
 
 #I'm using my own pickup as the default for this template.
 
-aPickup=Pickup(name = "P22",
+aPickup=SysCompPickup(name = "P22",
                manuf = "Straylight",
+<<<<<<< HEAD:SingleAnalysis/singleData.R
                mDCR = 8.08,
                tableBase=paste(datafolder,'P22-A2', sep="/")
                )
 aPickup$setFromFiles()
+=======
+               mDCR = 8.08, 
+               tableBase='SingleAnalysis/SampleData/P22-A2')
+#aPickup$autoSetFromFiles()
+>>>>>>> d17131b94f63ff77bba87f270e69200c4ba19183:SingleAnalysis/sysCompExample.R
 
 print (aPickup$getRawPlot())
 print (aPickup$getPlot())

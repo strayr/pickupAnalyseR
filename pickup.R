@@ -40,8 +40,10 @@ Pickup <- setRefClass(
   fields = list(
     name = "character",
     manuf = "character",
-    
-    tableBase = "character",
+    #hasLoaded = "logical",     #Not using
+    #hasUnloaded = "logical",   #Not Using
+    #hasInd = "logical",        #Not Using
+    #tableBase = "character",
     smoothing="numeric",
     
     #The big unweildy data from datalogger or SPICE
@@ -91,8 +93,8 @@ Pickup$methods(
 
 Pickup$methods(
   setLoaded = function(x) {
-    x<-removeExcess(x)
-    names(x)<-shortNames(x)
+    #x<-removeExcess(x)
+    #names(x)<-shortNames(x)
     x<-processBode(x)
     loaded <<- x
   }
@@ -102,8 +104,8 @@ Pickup$methods(
 
 Pickup$methods(
   setUnloaded = function(x) {
-    x<-removeExcess(x)
-    names(x)<-shortNames(x)
+    # x<-removeExcess(x)
+    # names(x)<-shortNames(x)
     x<-processBode(x)
     unloaded <<- x
     #We've just invalidated our calculation and can't garantee having Induction data so reset
@@ -115,7 +117,7 @@ Pickup$methods(
 Pickup$methods(
   setInduction = function(x) {
     x<-removeExcess(x)
-    names(x)<-shortNames(x)
+    names(x)<-shortNames(x) # should really be shortNames(names(x)) and done pickup specific
     x<-processBode(x)
     induction <<- x
     #We've just invalidated our calculation and can't garantee having capacitance data so reset
@@ -128,25 +130,35 @@ Pickup$methods(
 )
 
 ##
-# This assumes the bode plots are in CSV files with systemic prefixes
+# This assumes the bode plots are in CSV files with systemic prefixes 
+# this has been shifted to data-specific classes derived from this 
 
-Pickup$methods(
-  setFromFiles = function(fileStem=tableBase, schema="SYSCOMP") {
-    ul <- paste0(fileStem, "-UL.csv")
-    ld <- paste0(fileStem, "-LD.csv")
-    it <- paste0(fileStem, "-IT.csv")
-    setLoaded(read.table(file = ld, sep=',', header = TRUE))
-    setInduction(read.table(file = it, sep=',', header = TRUE))
-    setUnloaded(read.table(file = ul, sep=',', header = TRUE))
-    smoothing<<-defaultSmoothing
-   
-  }
-)
+# Pickup$methods(
+#   setFromFiles = function(fileStem=tableBase, schema="SYSCOMP") {
+#     ul <- paste0(fileStem, "-UL.csv")
+#     ld <- paste0(fileStem, "-LD.csv")
+#     it <- paste0(fileStem, "-IT.csv")
+#     if(hasLoaded){
+#       setLoaded(read.table(file = ld, sep=',', header = TRUE))
+#     }
+#     if(hasInd){
+#       setInduction(read.table(file = it, sep=',', header = TRUE))
+#     }
+#     if(hasUnloaded){
+#       setUnloaded(read.table(file = ul, sep=',', header = TRUE))
+#     }
+#     smoothing<<-defaultSmoothing
+#    
+#   }
+# )
 
 
 ## Acessor getInd for variable cIND
 Pickup$methods(
   getInd = function() {
+    if () {
+      
+    }
     if (cInd>0) {
       return (cInd)
     } else {
