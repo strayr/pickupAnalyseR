@@ -82,6 +82,7 @@ Pickup$methods(
     peak = list()
     peak$freq = bodeData$Freq[index]
     peak$mag = smoothed[index]
+    #print(peak) #debug
     return(peak)
   }
 )
@@ -148,6 +149,8 @@ Pickup$methods(
       return (cInd)
     } else {
       inF=priSimplePeak(induction)
+      #print(induction)
+      #print(inF)
       cInd <<- 1 / (((2 * pi * inF$freq) ^ 2) * (10^-8))
       indRawPeak<<-inF
       return (cInd)
@@ -296,7 +299,7 @@ Pickup$methods(
       
       
       
-      ylim(-10, 6) +
+      ylim(-5, 5) +
       ggtitle(paste(aPickup$manuf, aPickup$name), "Integrated") +
       xlab("Frequency /Hz") +
       ylab("Magnetude /dB (-20db/Decade)")
