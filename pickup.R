@@ -24,8 +24,10 @@ library(ggpmisc)
 library(quantmod)
 
 #I have some packages of useful functions that I should probably internalise here
-source ('indexutil.R')
-source('bodeUtils.R')
+if(!exists("libfolder")) {libfolder<-'.'}
+source (paste(libfolder, 'indexutil.R', sep="/"))
+source (paste(libfolder, 'bodeUtils.R', sep="/"))
+
 
 
 #TODO handle this
@@ -299,7 +301,7 @@ Pickup$methods(
       
       
       
-      ylim(-5, 5) +
+      #ylim(-5, 5) +
       ggtitle(paste(aPickup$manuf, aPickup$name), "Integrated") +
       xlab("Frequency /Hz") +
       ylab("Magnetude /dB (-20db/Decade)")
