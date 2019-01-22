@@ -2,10 +2,13 @@
 # Each pickup needs one of these to define a report. This should be as short as possible and 
 # contain no logic beyond defining a piuckup and printing some data
 #
+ 
+datafolder<-"pickupAnalyseR/SingleAnalysis/SampleData"
 
 ##
 # Import needed libraries
-source('pickup.R')
+libfolder<-"pickupAnalyseR"
+source(paste(libfolder, 'pickup.R', sep="/"))
 
 
 
@@ -18,7 +21,8 @@ source('pickup.R')
 aPickup=Pickup(name = "P22",
                manuf = "Straylight",
                mDCR = 8.08,
-               tableBase='SingleAnalysis/SampleData/P22-A2')
+               tableBase=paste(datafolder,'P22-A2', sep="/")
+               )
 aPickup$setFromFiles()
 
 print (aPickup$getRawPlot())
