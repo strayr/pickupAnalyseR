@@ -21,16 +21,9 @@ source(paste(libfolder, 'sysCompPickup.R', sep="/"))
 
 aPickup=SysCompPickup(name = "P22",
                manuf = "Straylight",
-<<<<<<< HEAD:SingleAnalysis/singleData.R
                mDCR = 8.08,
                tableBase=paste(datafolder,'P22-A2', sep="/")
                )
-aPickup$setFromFiles()
-=======
-               mDCR = 8.08, 
-               tableBase='SingleAnalysis/SampleData/P22-A2')
-#aPickup$autoSetFromFiles()
->>>>>>> d17131b94f63ff77bba87f270e69200c4ba19183:SingleAnalysis/sysCompExample.R
 
 print (aPickup$getRawPlot())
 print (aPickup$getPlot())
