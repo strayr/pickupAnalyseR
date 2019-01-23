@@ -103,11 +103,14 @@ Pickup$methods(
 
 
 Pickup$methods(
-  setUnloaded = function(x) {
+  setUnloaded = function(ulTable) {
     # x<-removeExcess(x)
     #names(x)<-shortNames(x)
-    x<-processBode(x)
-    unloaded <<- x
+    # print("pickup.R 109")
+    # print(head(ulTable))
+    # print("pickup.R 111")
+    x<-processBode(ulTable)
+    unloaded <<- ulTable
     #We've just invalidated our calculation and can't garantee having Induction data so reset
     cCap <<- (-1)
     # getCap()
