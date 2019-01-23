@@ -1,5 +1,10 @@
 #SysCompPickup
-source('pickup.R')
+
+if(!exists("libfolder")) {libfolder<-'.'}
+source (paste(libfolder, 'pickup.R', sep="/"))
+source (paste(libfolder, 'columnNames.R', sep="/"))
+
+
 SysCompPickup <- setRefClass(
   "SyscompPickup",
   contains="Pickup"
@@ -18,9 +23,17 @@ SysCompPickup$methods(
     ld <- paste0(fileStem, "-LD.csv")
     it <- paste0(fileStem, "-IT.csv")
  
-    setLoaded(read.table(file = ld, sep=',', header = TRUE))
-    setInduction(read.table(file = it, sep=',', header = TRUE))
-    setUnloaded(read.table(file = ul, sep=',', header = TRUE))
+    ldTable=read.table(file = ld, sep=',', header = TRUE)
+    itTable=read.table(file = it, sep=',', header = TRUE)
+    ulTable=read.table(file = ul, sep=',', header = TRUE)
+    
+    names(ldTable)=stdNames(names(ldTable))
+    names(itTable)=stdNames(names(itTable))
+    names(ulTable)=stdNames(names(ulTable))
+    
+    setLoaded(ldTable)
+    setInduction(itTable)
+    setUnloaded(ulTable)
   
     smoothing<<-defaultSmoothing
     

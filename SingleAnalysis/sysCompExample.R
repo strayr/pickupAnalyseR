@@ -10,6 +10,7 @@ datafolder<-"pickupAnalyseR/SingleAnalysis/SampleData"
 
 libfolder<-"pickupAnalyseR"
 source(paste(libfolder, 'sysCompPickup.R', sep="/"))
+#source(sysCompPickup.R)
 
 
 
