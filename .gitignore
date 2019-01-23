@@ -2,4 +2,8 @@
 .Rhistory
 .RData
 .Ruserdata
-GuitarAnalysisData
+*.png
+*.pdf
+ScopeData.Rproj
+PrivateAnalysis
+csv

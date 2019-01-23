@@ -15,7 +15,7 @@ removeExcess <- function(bodeData){
   return (bodeData[,!(names(bodeData) %in% drop)])
 }
 
-processBode <- function (bodeData, fMin=100, fMax=500, gain=0.0) {
+processBode <- function (bodeData, fMin=400, fMax=500, gain=0.0) {
   #Apply -20dB/decade slope
   print(head(bodeData))
   bodeData$IntMag <- (bodeData$Mag - 20 * log10(bodeData$Freq) )
@@ -31,7 +31,7 @@ processBode <- function (bodeData, fMin=100, fMax=500, gain=0.0) {
   #calculate gain offset
   gain <- 0 - mean(fRange$IntMag)
   #and apply
-  bodeData$IntMag <- (bodeData$IntMag + gain)
+  #bodeData$IntMag <- (bodeData$IntMag + gain)
   loessMod <- loess(IntMag~Freq, bodeData, span=0.07)
   smoothed <- predict(loessMod)
   bodeData$smIntMag <-smoothed

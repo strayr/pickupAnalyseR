@@ -3,7 +3,7 @@
 
 ##Returns the index of the largest value, if several are identical then returns the middle index
 maxIndex <- function(aList) {
-  peak=0.0
+  peak=-100.0
   peakIndex=0
   peakStart=0
   peakEnd=0
