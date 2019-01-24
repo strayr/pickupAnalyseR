@@ -22,12 +22,13 @@ aPickup<-VellemanPickup(name = "Super Distortion",
                tableBase='GuitarAnalysisData/Velleman/dimarzio_super_dist.txt',
                unloadedIndex=1,
                loadedIndex=2,
-               indIndex=1 # Blatant LIE
+               indIndex=1, # Blatant LIE
+               smoothing=0.07
                )
 
 
 print (aPickup$getRawPlot())
-#print (aPickup$getPlot())
+print (aPickup$getPlot())
 
 #TODO unloaded plot for pedants
 

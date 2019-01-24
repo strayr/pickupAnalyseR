@@ -77,6 +77,15 @@ Pickup <- setRefClass(
 ) #End pickup def
 
 
+Pickup$methods(
+  initialize=function(smoothing=0, ...) {
+    if (smoothing==0) {
+      smoothing <<- defaultSmoothing
+      }
+  }
+)
+
+
 # A class method for internal use to identify peaks
 Pickup$methods(
   priSimplePeak = function(bodeData) {
@@ -95,8 +104,8 @@ Pickup$methods(
   setLoaded = function(x) {
     #x<-removeExcess(x)
     #names(x)<-shortNames(x)
-    x<-processBode(x)
-    loaded <<- x
+    loaded <<- processBode(x, smoothing=smoothing)
+    print(head(loaded))
   }
 )
 
@@ -109,8 +118,7 @@ Pickup$methods(
     # print("pickup.R 109")
     # print(head(ulTable))
     # print("pickup.R 111")
-    x<-processBode(ulTable)
-    unloaded <<- ulTable
+    unloaded <<-processBode(ulTable, smoothing=smoothing)
     #We've just invalidated our calculation and can't garantee having Induction data so reset
     cCap <<- (-1)
     # getCap()
@@ -119,10 +127,7 @@ Pickup$methods(
 
 Pickup$methods(
   setInduction = function(x) {
-    x<-removeExcess(x)
-    names(x)<-shortNames(x) # should really be shortNames(names(x)) and done pickup specific
-    x<-processBode(x)
-    induction <<- x
+    induction <<- processBode(x, smoothing=smoothing)
     #We've just invalidated our calculation and can't garantee having capacitance data so reset
     cInd <<- (-1)
     cCap <<- (-1)
@@ -268,14 +273,14 @@ Pickup$methods(
 
 Pickup$methods(
   getLDPeaks = function(){
-    peakIndex <- (findPeaks(as.matrix(loaded)[,4]))
+    peakIndex <- (findPeaks(as.matrix(loaded$smIntMag)))
     return(loaded[peakIndex,] )
   }
 )
 
 Pickup$methods(
   getULPeaks = function(){
-    peakIndex <- (findPeaks(as.matrix(unloaded)[,4]))
+    peakIndex <- (findPeaks(as.matrix(unloaded$smIntMag)))
     return(unloaded[peakIndex,] )
   }
 )
@@ -296,8 +301,10 @@ Pickup$methods(
       ) +
       
       geom_line(mapping = aes(x = Freq , y = IntMag)) +
-      geom_smooth(mapping = aes(x = Freq , y = IntMag) , span = smoothing) +
-      geom_line(data = unloaded, mapping = aes(x = Freq , y = IntMag)) +
+      geom_smooth(mapping = aes(x = Freq , y = IntMag),
+                  span = smoothing
+                  ) +
+      geom_line(data = loaded, mapping = aes(x = Freq , y = IntMag)) +
       geom_smooth(
         data = aPickup$loaded,
         mapping = aes(x = Freq , y = IntMag) ,

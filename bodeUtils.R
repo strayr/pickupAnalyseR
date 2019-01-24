@@ -15,26 +15,39 @@ removeExcess <- function(bodeData){
   return (bodeData[,!(names(bodeData) %in% drop)])
 }
 
-processBode <- function (bodeData, fMin=400, fMax=500, gain=0.0) {
+processBode <- function (bodeData, fMin=299, fMax=601, gain=0.0, smoothing=0.07) {
   #Apply -20dB/decade slope
-  print(head(bodeData))
+  
   bodeData$IntMag <- (bodeData$Mag - 20 * log10(bodeData$Freq) )
   
   
-  #chop out the section that should be flatish
-  fRange <- subset(bodeData, Freq > fMin & Freq < fMax, IntMag)
+  
   
   #TODO check to see if a gain offeset is supplied, and apply this instead
   #of calculating 0db line. Only use to compare relative responses of pickups
   #on the same test circut.
+  # 
+  # loessMod <- loess(IntMag~Freq, bodeData, span=smoothing) #span 0.07 here
+  # smoothed <- predict(loessMod)
+  bodeData$smIntMag <- tryCatch({
+    loessMod <- loess(IntMag~Freq, bodeData, span=smoothing) #span 0.07 here
+    smoothed <- predict(loessMod)
+    return(smoothed)
+  },
+  error = function(err){
+    return (bodeData$IntMag)
+  }) #End tryCatch
+  
+  #chop out the section that should be flatish
+  fRange <- subset(bodeData, Freq > fMin & Freq < fMax, smIntMag)
   
   #calculate gain offset
-  gain <- 0 - mean(fRange$IntMag)
+  gain <- 0 - mean(fRange$smIntMag)
   #and apply
-  #bodeData$IntMag <- (bodeData$IntMag + gain)
-  loessMod <- loess(IntMag~Freq, bodeData, span=0.07)
-  smoothed <- predict(loessMod)
-  bodeData$smIntMag <-smoothed
+  
+  bodeData$IntRelMag <- (bodeData$IntMag + gain)
+  #bodedata$smRelMag
+  print(head(bodeData))
   return (bodeData)
 }
 
