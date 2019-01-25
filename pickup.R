@@ -77,13 +77,17 @@ Pickup <- setRefClass(
 ) #End pickup def
 
 
-Pickup$methods(
-  initialize=function(smoothing=0, ...) {
-    if (smoothing==0) {
-      smoothing <<- defaultSmoothing
-      }
-  }
-)
+# Pickup$methods(
+#   initialize=function(smoothing=0, ...) {
+#     if (smoothing==0) {
+#       smoothing <<- defaultSmoothing
+#     } else {
+#       smoothing <<- smoothing
+#     }
+#     manuf <<- manuf
+#     name <<- name
+#   }
+# )
 
 
 # A class method for internal use to identify peaks
@@ -104,7 +108,8 @@ Pickup$methods(
   setLoaded = function(x) {
     #x<-removeExcess(x)
     #names(x)<-shortNames(x)
-    loaded <<- processBode(x, smoothing=smoothing)
+    print(head(x))
+    loaded <<- processBode(x)
     print(head(loaded))
   }
 )
@@ -259,14 +264,14 @@ Pickup$methods(
 
 Pickup$methods(
   getLDCutoff = function(){
-    cutoff=loaded[head(which(loaded$smIntMag < -3)[1],n=1),"Freq"]
+    cutoff=loaded[head(which(loaded$smRelMag < -3)[1],n=1),"Freq"]
     return(cutoff)
   }
 )
 
 Pickup$methods(
   getULCutoff = function(){
-    cutoff=unloaded[head(which(unloaded$smIntMag < -3)[1],n=1),"Freq"]
+    cutoff=unloaded[head(which(unloaded$smRelMag < -3)[1],n=1),"Freq"]
     return(cutoff)
   }
 )
@@ -292,7 +297,7 @@ Pickup$methods(
 
 
 Pickup$methods(
-  getPlot = function(){
+  getIntPlot = function(){
     myPlot = ggplot (data = unloaded) +
       scale_x_log10(minor_breaks = log10_minor_break()) +
       theme(
@@ -306,7 +311,7 @@ Pickup$methods(
                   ) +
       geom_line(data = loaded, mapping = aes(x = Freq , y = IntMag)) +
       geom_smooth(
-        data = aPickup$loaded,
+        data =loaded,
         mapping = aes(x = Freq , y = IntMag) ,
         span = smoothing,
         colour = "red"
@@ -324,7 +329,47 @@ Pickup$methods(
       
       
       #ylim(-5, 5) +
-      ggtitle(paste(aPickup$manuf, aPickup$name), "Integrated") +
+      ggtitle(paste(manuf, name), "Integrated") +
+      xlab("Frequency /Hz") +
+      ylab("Magnetude /dB (-20db/Decade)")
+    return(myPlot)
+  }
+)
+
+Pickup$methods(
+  getRelPlot = function(){
+    myPlot = ggplot (data = unloaded) +
+      scale_x_log10(minor_breaks = log10_minor_break()) +
+      theme(
+        panel.grid.major.x = element_line(size = 0.1),
+        panel.grid.minor.x = element_line(size = 0.2)
+      ) +
+      
+      geom_line(mapping = aes(x = Freq , y = IntRelMag)) +
+      geom_smooth(mapping = aes(x = Freq , y = IntRelMag),
+                  span = smoothing
+      ) +
+      geom_line(data = loaded, mapping = aes(x = Freq , y = IntRelMag)) +
+      geom_smooth(
+        data = loaded,
+        mapping = aes(x = Freq , y = IntRelMag) ,
+        span = smoothing,
+        colour = "red"
+      ) +
+      
+      geom_vline(xintercept = tail(getLDPeaks()[,"Freq"], n=1), colour = "red")+
+      geom_vline(xintercept = getLDCutoff(), colour = "red")+
+      geom_vline(xintercept = tail(getULPeaks()[,"Freq"], n=1), colour = "blue")+
+      geom_vline(xintercept = getULCutoff(), colour = "blue")+
+      
+      #Add "raw" data
+      geom_vline(xintercept = getLdRawPeak()$freq, colour="red", linetype="dashed")+
+      geom_vline(xintercept = getUlRawPeak()$freq, colour="blue", linetype="dashed")+
+      
+      
+      
+      #ylim(-5, 5) +
+      ggtitle(paste(manuf, name, "Integrated")) +
       xlab("Frequency /Hz") +
       ylab("Magnetude /dB (-20db/Decade)")
     return(myPlot)
@@ -336,6 +381,7 @@ Pickup$methods(
 #
 Pickup$methods(
   getRawPlot = function(){
+    print(manuf)
     myPlot = ggplot (data = unloaded) +
       scale_x_log10(minor_breaks = log10_minor_break()) +
       theme(
@@ -375,7 +421,7 @@ Pickup$methods(
       
       
       #ylim(-10, 6) +
-      ggtitle(paste(aPickup$manuf, aPickup$name), "Raw") +
+      ggtitle(paste(manuf, name, "Raw")) +
       xlab("Frequency /Hz") +
       ylab("Magnetude /dB")
     return(myPlot)

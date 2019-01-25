@@ -32,10 +32,10 @@ processBode <- function (bodeData, fMin=299, fMax=601, gain=0.0, smoothing=0.07)
   bodeData$smIntMag <- tryCatch({
     loessMod <- loess(IntMag~Freq, bodeData, span=smoothing) #span 0.07 here
     smoothed <- predict(loessMod)
-    return(smoothed)
+    smoothed
   },
   error = function(err){
-    return (bodeData$IntMag)
+    bodeData$IntMag
   }) #End tryCatch
   
   #chop out the section that should be flatish
@@ -46,6 +46,7 @@ processBode <- function (bodeData, fMin=299, fMax=601, gain=0.0, smoothing=0.07)
   #and apply
   
   bodeData$IntRelMag <- (bodeData$IntMag + gain)
+  bodeData$smRelMag <- (bodeData$smIntMag + gain)
   #bodedata$smRelMag
   print(head(bodeData))
   return (bodeData)
