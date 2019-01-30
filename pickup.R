@@ -246,7 +246,7 @@ Pickup$methods(
 
 Pickup$methods(
   preMergeLoaded = function() {
-    lOut <- loaded[,(names(loaded) %in% c("Freq", "IntMag"))]
+    lOut <- loaded[,(names(loaded) %in% c("Freq", "IntRelMag"))]
     names(lOut)<-c("Freq", name)
     return(lOut)
   }
@@ -255,7 +255,7 @@ Pickup$methods(
 
 Pickup$methods(
   preMergeUL = function() {
-    lOut <- unloaded[,(names(unloaded) %in% c("Freq", "IntMag"))]
+    lOut <- unloaded[,(names(unloaded) %in% c("Freq", "IntRelMag"))]
     names(lOut)<-c("Freq", name)
     return(lOut)
   }

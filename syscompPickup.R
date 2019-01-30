@@ -36,7 +36,7 @@ SysCompPickup$methods(
     setInduction(itTable)
     setUnloaded(ulTable)
   
-    #smoothing<<-defaultSmoothing
+    smoothing<<-defaultSmoothing
     
   }
 )
