@@ -273,15 +273,21 @@ Pickup$methods(
 
 Pickup$methods(
   getLDCutoff = function() {
-    cutoff = loaded[head(which(loaded$smRelMag < -3)[1], n = 1), "Freq"]
-    return(cutoff)
+    cutoff = loaded[loaded$smRelMag < -3,]
+    #print(cutoff)
+    trimCutoff = cutoff[cutoff$Freq > getLdRawPeak()$freq,] #only want the peaks after the raw data spikes
+    #print(trimCutoff)
+    return(head(trimCutoff, n = 1)$Freq)
   }
 )
 
 Pickup$methods(
   getULCutoff = function() {
-    cutoff = unloaded[head(which(unloaded$smRelMag < -3)[1], n = 1), "Freq"]
-    return(cutoff)
+    cutoff = loaded[unloaded$smRelMag < -3,]
+    #print(cutoff)
+    trimCutoff = cutoff[cutoff$Freq > getULRawPeak()$freq,] #only want the peaks after the raw data spikes
+    #print(trimCutoff)
+    return(head(trimCutoff, n = 1)$Freq)
   }
 )
 
@@ -468,3 +474,90 @@ Pickup$methods(
   }
 )
 #End
+
+Pickup$methods(
+  printData = function() {
+    print(paste(manuf, name))
+    print(paste(
+      "Calculated Inductance:",
+      prettyNum(p$getInd(), format = "fg", digits = 3),
+      "H"
+    ))
+    print(paste(
+      "Calculated Capacitance:",
+      prettyNum(getCap(), format = "fg", digits = 3),
+      "pF"
+    ))
+    print(paste(
+      "Loaded Cutoff:",
+      prettyNum(getLDCutoff(), format = "fg", digits = 3),
+      "Hz"
+    ))
+    print(paste(
+      "Loaded Resonant Peak:",
+      prettyNum(getLDPeak()$Freq, format = "fg", digits = 3),
+      "Hz",
+      prettyNum(
+        getLDPeak()$smIntMag,
+        format = "fg",
+        digits = 3
+      ),
+      "dB"
+    ))
+    print(paste(
+      "Raw Loaded Peak:",
+      prettyNum(
+        getLdRawPeak()$freq,
+        format = "fg",
+        digits = 3
+      ),
+      "Hz",
+      prettyNum(getLdRawPeak()$mag, format = "fg", digits = 3),
+      "dB"
+    ))
+    print(paste(
+      "Unloaded Cutoff:",
+      prettyNum(getULCutoff(), format = "fg", digits = 3),
+      "Hz"
+    ))
+    print(paste(
+      "Unloaded Resonant Peak:",
+      prettyNum(getULPeak()$Freq, format = "fg", digits = 3),
+      "Hz",
+      prettyNum(
+        getULPeak()$smIntMag,
+        format = "fg",
+        digits = 3
+      ),
+      "dB"
+    ))
+    print(paste(
+      "Raw Unloaded Peak:",
+      prettyNum(
+        getULRawPeak()$freq,
+        format = "fg",
+        digits = 3
+      ),
+      "Hz",
+      prettyNum(getULRawPeak()$mag, format = "fg", digits = 3),
+      "dB"
+    ))
+    print(paste(
+      "Raw Induction Peak:",
+      prettyNum(
+        getIndRawPeak()$freq,
+        format = "fg",
+        digits = 3
+      ),
+      "Hz",
+      prettyNum(
+        getIndRawPeak()$mag,
+        format = "fg",
+        digits = 3
+      ),
+      "dB"
+    ))
+    
+  }
+)
+
