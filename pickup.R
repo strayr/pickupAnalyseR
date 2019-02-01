@@ -248,6 +248,7 @@ Pickup$methods(
   preMergeLoaded = function() {
     lOut <- loaded[,(names(loaded) %in% c("Freq", "IntRelMag"))]
     names(lOut)<-c("Freq", name)
+    #print(head (lOut)) #debug
     return(lOut)
   }
 
