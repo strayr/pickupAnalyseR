@@ -24,9 +24,11 @@ library(ggpmisc)
 library(quantmod)
 
 #I have some packages of useful functions that I should probably internalise here
-if(!exists("libfolder")) {libfolder<-'.'}
-source (paste(libfolder, 'indexutil.R', sep="/"))
-source (paste(libfolder, 'bodeUtils.R', sep="/"))
+if (!exists("libfolder")) {
+  libfolder <- '.'
+}
+source (paste(libfolder, 'indexutil.R', sep = "/"))
+source (paste(libfolder, 'bodeUtils.R', sep = "/"))
 
 
 
@@ -44,7 +46,7 @@ Pickup <- setRefClass(
     #hasUnloaded = "logical",   #Not Using
     #hasInd = "logical",        #Not Using
     #tableBase = "character",
-    smoothing="numeric",
+    smoothing = "numeric",
     
     #The big unweildy data from datalogger or SPICE
     loaded = "data.frame",
@@ -61,16 +63,20 @@ Pickup <- setRefClass(
     mDCR = "numeric",
     
     #caluclatable values
-    #Set to -1 if not calculated or able to be calculated 
+    #Set to -1 if not calculated or able to be calculated
     #Setting data tables and get* methods attempt calculation
-    cCap = "numeric", #use getCap()
-    cInd = "numeric",  #use getInd()
+    cCap = "numeric",
+    #use getCap()
+    cInd = "numeric",
+    #use getInd()
     
     
     #Store the peaks from the raw plots, this is calculated and cached data so use the accessors
-    indRawPeak = "list", #use getIndRawPeak()
-    ldRawPeak = "list", #use getLdRawPeak()
-    ulRawPeak = "list" #use getUlRawPeak()
+    indRawPeak = "list",
+    #use getIndRawPeak()
+    ldRawPeak = "list",
+    #use getLdRawPeak()
+    ulRawPeak = "list" #use getULRawPeak()
     
     
   )
@@ -108,9 +114,9 @@ Pickup$methods(
   setLoaded = function(x) {
     #x<-removeExcess(x)
     #names(x)<-shortNames(x)
-    print(head(x))
+    # print(head(x))
     loaded <<- processBode(x)
-    print(head(loaded))
+    # print(head(loaded))
   }
 )
 
@@ -123,7 +129,7 @@ Pickup$methods(
     # print("pickup.R 109")
     # print(head(ulTable))
     # print("pickup.R 111")
-    unloaded <<-processBode(ulTable, smoothing=smoothing)
+    unloaded <<- processBode(ulTable, smoothing = smoothing)
     #We've just invalidated our calculation and can't garantee having Induction data so reset
     cCap <<- (-1)
     # getCap()
@@ -132,7 +138,7 @@ Pickup$methods(
 
 Pickup$methods(
   setInduction = function(x) {
-    induction <<- processBode(x, smoothing=smoothing)
+    induction <<- processBode(x, smoothing = smoothing)
     #We've just invalidated our calculation and can't garantee having capacitance data so reset
     cInd <<- (-1)
     cCap <<- (-1)
@@ -143,8 +149,8 @@ Pickup$methods(
 )
 
 ##
-# This assumes the bode plots are in CSV files with systemic prefixes 
-# this has been shifted to data-specific classes derived from this 
+# This assumes the bode plots are in CSV files with systemic prefixes
+# this has been shifted to data-specific classes derived from this
 
 # Pickup$methods(
 #   setFromFiles = function(fileStem=tableBase, schema="SYSCOMP") {
@@ -161,7 +167,7 @@ Pickup$methods(
 #       setUnloaded(read.table(file = ul, sep=',', header = TRUE))
 #     }
 #     smoothing<<-defaultSmoothing
-#    
+#
 #   }
 # )
 
@@ -171,15 +177,15 @@ Pickup$methods(
   getInd = function() {
     if (is.null(induction)) {
       return (NA)
-    } 
-    if (cInd>0) {
+    }
+    if (cInd > 0) {
       return (cInd)
     } else {
-      inF=priSimplePeak(induction)
+      inF = priSimplePeak(induction)
       #print(induction)
       #print(inF)
-      cInd <<- 1 / (((2 * pi * inF$freq) ^ 2) * (10^-8))
-      indRawPeak<<-inF
+      cInd <<- 1 / (((2 * pi * inF$freq) ^ 2) * (10 ^ -8))
+      indRawPeak <<- inF
       return (cInd)
     }
     
@@ -189,12 +195,13 @@ Pickup$methods(
 ## Accessor getCap for variable cCap
 Pickup$methods(
   getCap = function() {
-    if (cCap>0) {
+    if (cCap > 0) {
       return (cCap)
     } else {
-      ulF=priSimplePeak(unloaded)
-      cCap <<- (1/(((2 * pi * ulF$freq) ^ 2) * getInd())) * (10^12) - defaultProbeCap
-      ulRawPeak<<-ulF
+      ulF = priSimplePeak(unloaded)
+      cCap <<-
+        (1 / (((2 * pi * ulF$freq) ^ 2) * getInd())) * (10 ^ 12) - defaultProbeCap
+      ulRawPeak <<- ulF
       return (cCap)
     }
     
@@ -204,20 +211,20 @@ Pickup$methods(
 ## Accessor getLdRawPeak
 Pickup$methods(
   getLdRawPeak = function() {
-    if (length(ldRawPeak)>0) {
+    if (length(ldRawPeak) > 0) {
       return (ldRawPeak)
     } else {
-      ldRawPeak<<-priSimplePeak(loaded)
+      ldRawPeak <<- priSimplePeak(loaded)
       return (ldRawPeak)
     }
     
   }
 )
 
-## Accessor getUlRawPeak
+## Accessor getULRawPeak
 Pickup$methods(
-  getUlRawPeak = function() {
-    if (length(ulRawPeak)>0) {
+  getULRawPeak = function() {
+    if (length(ulRawPeak) > 0) {
       return (ulRawPeak)
     } else {
       getCap() #Yes bad design, needs refactoring
@@ -226,10 +233,10 @@ Pickup$methods(
     
   }
 )
-## Accessor getUlRawPeak
+## Accessor getULRawPeak
 Pickup$methods(
   getIndRawPeak = function() {
-    if (length(indRawPeak)>0) {
+    if (length(indRawPeak) > 0) {
       return (indRawPeak)
     } else {
       getInd() #Yes bad design, needs refactoring
@@ -245,49 +252,67 @@ Pickup$methods(
 #TODO just melt the data here so we can do a simple concatination
 
 Pickup$methods(
-  preMergeLoaded = function() {
-    lOut <- loaded[,(names(loaded) %in% c("Freq", "IntRelMag"))]
-    names(lOut)<-c("Freq", name)
-    #print(head (lOut)) #debug
-    return(lOut)
-  }
-
-)
-
-Pickup$methods(
-  preMergeUL = function() {
-    lOut <- unloaded[,(names(unloaded) %in% c("Freq", "IntRelMag"))]
-    names(lOut)<-c("Freq", name)
+  getLoadedPlotData = function(column) {
+    lOut <- loaded[, (names(loaded) %in% c("Freq", column))]
+    names(lOut) <- c("Freq", name)
+    # print(head (lOut)) #debug
     return(lOut)
   }
   
 )
 
 Pickup$methods(
-  getLDCutoff = function(){
-    cutoff=loaded[head(which(loaded$smRelMag < -3)[1],n=1),"Freq"]
+  getUnLoadedPlotData = function(column) {
+    lOut <- unloaded[, (names(unloaded) %in% c("Freq", column))]
+    names(lOut) <- c("Freq", name)
+    # print(head (lOut)) #debug
+    return(lOut)
+  }
+  
+)
+
+Pickup$methods(
+  getLDCutoff = function() {
+    cutoff = loaded[head(which(loaded$smRelMag < -3)[1], n = 1), "Freq"]
     return(cutoff)
   }
 )
 
 Pickup$methods(
-  getULCutoff = function(){
-    cutoff=unloaded[head(which(unloaded$smRelMag < -3)[1],n=1),"Freq"]
+  getULCutoff = function() {
+    cutoff = unloaded[head(which(unloaded$smRelMag < -3)[1], n = 1), "Freq"]
     return(cutoff)
   }
 )
 
 Pickup$methods(
-  getLDPeaks = function(){
+  getLDPeaks = function() {
     peakIndex <- (findPeaks(as.matrix(loaded$smIntMag)))
-    return(loaded[peakIndex,] )
+    #print(tail(loaded[peakIndex,], n=1 )) #debug
+    return(loaded[peakIndex, ])
   }
 )
 
 Pickup$methods(
-  getULPeaks = function(){
+  getLDPeak = function() {
+    peaks = getLDPeaks()
+    trimPeaks = peaks[peaks$Freq < getLdRawPeak()$freq, ] #only want the peaks before the raw data spikes
+    return(tail(trimPeaks, n = 1)) # we want the last one
+  }
+)
+
+Pickup$methods(
+  getULPeaks = function() {
     peakIndex <- (findPeaks(as.matrix(unloaded$smIntMag)))
-    return(unloaded[peakIndex,] )
+    return(unloaded[peakIndex, ])
+  }
+)
+
+Pickup$methods(
+  getULPeak = function() {
+    peaks = getULPeaks()
+    trimPeaks = peaks[peaks$Freq < getULRawPeak()$freq, ] #only want the peaks before the raw data spikes
+    return(tail(trimPeaks, n = 1)) # we want the last one
   }
 )
 
@@ -298,7 +323,7 @@ Pickup$methods(
 
 
 Pickup$methods(
-  getIntPlot = function(){
+  getIntPlot = function() {
     myPlot = ggplot (data = unloaded) +
       scale_x_log10(minor_breaks = log10_minor_break()) +
       theme(
@@ -308,24 +333,27 @@ Pickup$methods(
       
       geom_line(mapping = aes(x = Freq , y = IntMag)) +
       geom_smooth(mapping = aes(x = Freq , y = IntMag),
-                  span = smoothing
-                  ) +
+                  span = smoothing) +
       geom_line(data = loaded, mapping = aes(x = Freq , y = IntMag)) +
       geom_smooth(
-        data =loaded,
+        data = loaded,
         mapping = aes(x = Freq , y = IntMag) ,
         span = smoothing,
         colour = "red"
       ) +
       
-      geom_vline(xintercept = tail(getLDPeaks()[,"Freq"], n=1), colour = "red")+
-      geom_vline(xintercept = getLDCutoff(), colour = "red")+
-      geom_vline(xintercept = tail(getULPeaks()[,"Freq"], n=1), colour = "blue")+
-      geom_vline(xintercept = getULCutoff(), colour = "blue")+
+      geom_vline(xintercept = getLDPeak()$Freq, colour = "red") +
+      geom_vline(xintercept = getLDCutoff(), colour = "red") +
+      geom_vline(xintercept = getULPeak()$Freq, colour = "blue") +
+      geom_vline(xintercept = getULCutoff(), colour = "blue") +
       
       #Add "raw" data
-      geom_vline(xintercept = getLdRawPeak()$freq, colour="red", linetype="dashed")+
-      geom_vline(xintercept = getUlRawPeak()$freq, colour="blue", linetype="dashed")+
+      geom_vline(xintercept = getLdRawPeak()$freq,
+                 colour = "red",
+                 linetype = "dashed") +
+      geom_vline(xintercept = getULRawPeak()$freq,
+                 colour = "blue",
+                 linetype = "dashed") +
       
       
       
@@ -338,7 +366,7 @@ Pickup$methods(
 )
 
 Pickup$methods(
-  getRelPlot = function(){
+  getRelPlot = function() {
     myPlot = ggplot (data = unloaded) +
       scale_x_log10(minor_breaks = log10_minor_break()) +
       theme(
@@ -348,8 +376,7 @@ Pickup$methods(
       
       geom_line(mapping = aes(x = Freq , y = IntRelMag)) +
       geom_smooth(mapping = aes(x = Freq , y = IntRelMag),
-                  span = smoothing
-      ) +
+                  span = smoothing) +
       geom_line(data = loaded, mapping = aes(x = Freq , y = IntRelMag)) +
       geom_smooth(
         data = loaded,
@@ -358,14 +385,18 @@ Pickup$methods(
         colour = "red"
       ) +
       
-      geom_vline(xintercept = tail(getLDPeaks()[,"Freq"], n=1), colour = "red")+
-      geom_vline(xintercept = getLDCutoff(), colour = "red")+
-      geom_vline(xintercept = tail(getULPeaks()[,"Freq"], n=1), colour = "blue")+
-      geom_vline(xintercept = getULCutoff(), colour = "blue")+
+      geom_vline(xintercept = getLDPeak()$Freq, colour = "red") +
+      geom_vline(xintercept = getLDCutoff(), colour = "red") +
+      geom_vline(xintercept = getULPeak()$Freq, colour = "blue") +
+      geom_vline(xintercept = getULCutoff(), colour = "blue") +
       
       #Add "raw" data
-      geom_vline(xintercept = getLdRawPeak()$freq, colour="red", linetype="dashed")+
-      geom_vline(xintercept = getUlRawPeak()$freq, colour="blue", linetype="dashed")+
+      geom_vline(xintercept = getLdRawPeak()$freq,
+                 colour = "red",
+                 linetype = "dashed") +
+      geom_vline(xintercept = getULRawPeak()$freq,
+                 colour = "blue",
+                 linetype = "dashed") +
       
       
       
@@ -381,8 +412,8 @@ Pickup$methods(
 # plots unintegrated data for verification of peak detection
 #
 Pickup$methods(
-  getRawPlot = function(){
-    print(manuf)
+  getRawPlot = function() {
+    #print(manuf)
     myPlot = ggplot (data = unloaded) +
       scale_x_log10(minor_breaks = log10_minor_break()) +
       theme(
@@ -410,14 +441,22 @@ Pickup$methods(
       ) +
       
       #Dashed data from integrated plot
-      geom_vline(xintercept = tail(getLDPeaks()[,"Freq"], n=1), colour = "red", linetype="dashed")+
-      geom_vline(xintercept = getLDCutoff(), colour = "red", linetype="dashed")+
-      geom_vline(xintercept = tail(getULPeaks()[,"Freq"], n=1), colour = "blue", linetype="dashed")+
-      geom_vline(xintercept = getULCutoff(), colour = "blue", linetype="dashed")+
+      geom_vline(xintercept = getLDPeak()$Freq,
+                 colour = "red",
+                 linetype = "dashed") +
+      geom_vline(xintercept = getLDCutoff(),
+                 colour = "red",
+                 linetype = "dashed") +
+      geom_vline(xintercept = getULPeak()$Freq,
+                 colour = "blue",
+                 linetype = "dashed") +
+      geom_vline(xintercept = getULCutoff(),
+                 colour = "blue",
+                 linetype = "dashed") +
       
-      geom_vline(xintercept = getLdRawPeak()$freq, colour="red")+
-      geom_vline(xintercept = getUlRawPeak()$freq, colour="blue")+
-      geom_vline(xintercept = getIndRawPeak()$freq, colour="green")+
+      geom_vline(xintercept = getLdRawPeak()$freq, colour = "red") +
+      geom_vline(xintercept = getULRawPeak()$freq, colour = "blue") +
+      geom_vline(xintercept = getIndRawPeak()$freq, colour = "green") +
       
       
       

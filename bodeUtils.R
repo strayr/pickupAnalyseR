@@ -48,7 +48,7 @@ processBode <- function (bodeData, fMin=299, fMax=601, gain=0.0, smoothing=0.07)
   bodeData$IntRelMag <- (bodeData$IntMag + gain)
   bodeData$smRelMag <- (bodeData$smIntMag + gain)
   #bodedata$smRelMag
-  print(head(bodeData))
+  #print(head(bodeData))
   return (bodeData)
 }
 

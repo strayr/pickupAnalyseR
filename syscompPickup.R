@@ -23,7 +23,7 @@ SysCompPickup$methods(
     ul <- paste0(fileStem, "-UL.csv")
     ld <- paste0(fileStem, "-LD.csv")
     it <- paste0(fileStem, "-IT.csv")
-    print(ld)
+    #print(ld)
     ldTable=read.table(file = ld, sep=',', header = TRUE)
     itTable=read.table(file = it, sep=',', header = TRUE)
     ulTable=read.table(file = ul, sep=',', header = TRUE)
