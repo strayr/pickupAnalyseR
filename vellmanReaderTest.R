@@ -1,7 +1,10 @@
 #velleman reader test
 # Import needed libraries
 libfolder<-"pickupAnalyseR"
-source(paste(libfolder, 'vellemanPickup.R', sep="/"))
+source(paste(libfolder, 'vellemanReader.R', sep="/"))
 
-vellmanTables <- vellemanReader("GuitarAnalysisData/Velleman/dimarzio_super_dist.txt", index =0)
-print (head(vellmanTables))
+vellmanTables1 <- vellemanReader("GuitarAnalysisData/Velleman/dimarzio_super_dist.txt")
+print (head(vellmanTables1))
+
+vellmanTables2 <- vellemanReader("GuitarAnalysisData/Velleman/dimarzio_super_dist-driver.txt")
+print (head(vellmanTables2))

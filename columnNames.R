@@ -21,6 +21,8 @@ stdNames <- function (bodeDataNames) {
   bodeDataNames[names.o == "Hz"]<-"Freq"
   bodeDataNames[names.o == "dBV"]<-"Mag"
   bodeDataNames[names.o == "deg"]<-"Phase"
+  bodeDataNames[names.o == "mVrms"]<-"Volts" #UGLY
+  bodeDataNames[names.o == "Vrms"]<-"Volts"
   
   #Convert CGM names
   bodeDataNames[names.o == "Frequency..Hz."]<-"Freq"

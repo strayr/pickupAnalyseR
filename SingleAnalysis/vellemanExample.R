@@ -19,7 +19,7 @@ source(paste(libfolder, 'vellemanPickup.R', sep="/"))
 aPickup<-VellemanPickup(name = "Super Distortion",
                manuf = "Dimarzio",
                mDCR = 16.0, 
-               tableBase='GuitarAnalysisData/Velleman/dimarzio_super_dist.txt',
+               tableBase='GuitarAnalysisData/Velleman/dimarzio_super_dist-driver.txt',
                unloadedIndex=1,
                loadedIndex=2,
                indIndex=1, # Blatant LIE
@@ -28,65 +28,7 @@ aPickup<-VellemanPickup(name = "Super Distortion",
 
 
 print (aPickup$getRawPlot())
-print (aPickup$getPlot())
+print (aPickup$getIntPlot(min=-100, max=-74))
+print (aPickup$getRelPlot())
 
-#TODO unloaded plot for pedants
-
-p <- aPickup
-
-print(paste(p$manuf, p$name))
-print(paste(
-  "Calculated Inductance:",
-  prettyNum(p$getInd(), format = "fg", digits = 3),
-  "H"
-))
-print(paste(
-  "Calculated Capacitance:",
-  prettyNum(p$getCap(), format = "fg", digits = 3),
-  "pF"
-))
-print(paste(
-  "Loaded Cutoff:",
-  prettyNum(p$getLDCutoff(), format = "fg", digits = 3),
-  "Hz"
-))
-print(paste(
-  "Loaded Resonant Peak:",
-  prettyNum(tail(p$loaded[findPeaks(as.matrix(p$loaded)[, 4]), "Freq"], 1), format = "fg", digits = 3),
-  "Hz",
-  prettyNum(tail(p$loaded[findPeaks(as.matrix(p$loaded)[, 4]), "smIntMag"], 1), format = "fg", digits = 3),
-  "dB"
-))
-print(paste(
-  "Raw Loaded Peak:",
-  prettyNum(p$getLdRawPeak()$freq, format = "fg", digits = 3),
-  "Hz",
-  prettyNum(p$getLdRawPeak()$mag, format = "fg", digits = 3),
-  "dB"
-))
-print(paste(
-  "Unloaded Cutoff:",
-  prettyNum(p$getULCutoff(), format = "fg", digits = 3),
-  "Hz"
-))
-print(paste(
-  "Unloaded Resonant Peak:",
-  prettyNum(tail(p$unloaded[findPeaks(as.matrix(p$unloaded)[, 4]), "Freq"], 1), format = "fg", digits = 3),
-  "Hz",
-  prettyNum(tail(p$unloaded[findPeaks(as.matrix(p$unloaded)[, 4]), "smIntMag"], 1), format = "fg", digits = 3),
-  "dB"
-))
-print(paste(
-  "Raw Unloaded Peak:",
-  prettyNum(p$getUlRawPeak()$freq, format = "fg", digits = 3),
-  "Hz",
-  prettyNum(p$getUlRawPeak()$mag, format = "fg", digits = 3),
-  "dB"
-))
-print(paste(
-  "Raw Induction Peak:",
-  prettyNum(p$getIndRawPeak()$freq, format = "fg", digits = 3),
-  "Hz",
-  prettyNum(p$getIndRawPeak()$mag, format = "fg", digits = 3),
-  "dB"
-))
+aPickup$printData()

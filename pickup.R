@@ -18,7 +18,8 @@ library(scales)
 library(ggpmisc)
 
 #For melting data- currently not used
-#library(purrr)
+library(purrr)
+library(reshape2)
 
 #Using a finance library for peak detecton
 library(quantmod)
@@ -329,7 +330,7 @@ Pickup$methods(
 
 
 Pickup$methods(
-  getIntPlot = function() {
+  getIntPlot = function(min= -70, max = -50, smoothing=defaultSmoothing) {
     myPlot = ggplot (data = unloaded) +
       scale_x_log10(minor_breaks = log10_minor_break()) +
       theme(
@@ -363,7 +364,7 @@ Pickup$methods(
       
       
       
-      #ylim(-5, 5) +
+      ylim(min, max) +
       ggtitle(paste(manuf, name), "Integrated") +
       xlab("Frequency /Hz") +
       ylab("Magnetude /dB (-20db/Decade)")
@@ -372,7 +373,7 @@ Pickup$methods(
 )
 
 Pickup$methods(
-  getRelPlot = function() {
+  getRelPlot = function(min= -10, max = 5, smoothing=defaultSmoothing) {
     myPlot = ggplot (data = unloaded) +
       scale_x_log10(minor_breaks = log10_minor_break()) +
       theme(
@@ -406,7 +407,7 @@ Pickup$methods(
       
       
       
-      #ylim(-5, 5) +
+      ylim(min, max) +
       ggtitle(paste(manuf, name, "Integrated")) +
       xlab("Frequency /Hz") +
       ylab("Magnetude /dB (-20db/Decade)")
@@ -418,7 +419,7 @@ Pickup$methods(
 # plots unintegrated data for verification of peak detection
 #
 Pickup$methods(
-  getRawPlot = function() {
+  getRawPlot = function(min= -1, max = -1, smoothing=defaultSmoothing) {
     #print(manuf)
     myPlot = ggplot (data = unloaded) +
       scale_x_log10(minor_breaks = log10_minor_break()) +
@@ -466,10 +467,14 @@ Pickup$methods(
       
       
       
-      #ylim(-10, 6) +
+      #ylim(min, max) +
       ggtitle(paste(manuf, name, "Raw")) +
       xlab("Frequency /Hz") +
       ylab("Magnetude /dB")
+    
+    if((min!=-1) | (max!=-1)) {
+      myPlot = myPlot + ylim(min, max)
+    }
     return(myPlot)
   }
 )

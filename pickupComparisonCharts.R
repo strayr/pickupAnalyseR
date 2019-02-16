@@ -3,11 +3,11 @@
 # A collection of comparison charts that operate on a LIST of Pickup (or subclass) objects
 #
 
-
+library(purrr)
 
 # Returns an integrated plot of pickups tested under standard load.
 # Use for comparasons of audible frequency response
-loadedRelPlot = function(pickupList,chartHeading="Unnamed", min= -10, max = 5, smoothing=0.07) {
+loadedRelPlot = function(pickupList,chartHeading="Unnamed", min= -70, max = 5, smoothing=0.07) {
   meltedLoad=melt(map(pickupList, ~ .x$getLoadedPlotData("IntRelMag") ), id.vars="Freq", variable.name="pickupName")
   myPlot = ggplot(meltedLoad, aes(Freq,value)) +
     geom_smooth(mapping = aes(colour=pickupName) , span = smoothing) +

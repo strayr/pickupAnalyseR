@@ -1,7 +1,14 @@
+NOT USED
+NOT USED
+NOT USED
+DILIBERATELY BREEAKING THIS SO I CAN SEE THIS IS NOT USED
+IT's ALL in VellemanPickup
 
 
-source('columnNames.R')
-source('plotData.R')
+libfolder<-"pickupAnalyseR"
+source(paste(libfolder, 'columnNames.R', sep="/"))
+source(paste(libfolder, 'plotData.R', sep="/"))
+
 
 vellemanReader <- function(filename){
   padding = 1
@@ -28,7 +35,7 @@ vellemanReader <- function(filename){
     tableSlice=myData[start:end,]
     names(tableSlice)=stdNames(names(tableSlice))
     tableSlice$Freq <- as.numeric(as.character(tableSlice$Freq))
-    tableSlice$mVrms <- as.numeric(as.character(tableSlice$mVrms))
+    tableSlice$Volts <- as.numeric(as.character(tableSlice$Volts))
     tableSlice$Mag <- as.numeric(as.character(tableSlice$Mag))
     tableSlice$Phase <- as.numeric(as.character(tableSlice$Phase))
     aTable=PlotData(table=tableSlice)
@@ -41,4 +48,4 @@ vellemanReader <- function(filename){
 }
 
 # Test Driver
-vellmanTables <- vellemanReader("./GuitarAnalysisData/Velleman/dimarzio_super_dist.txt")
+#vellmanTables <- vellemanReader("./GuitarAnalysisData/Velleman/dimarzio_super_dist.txt")

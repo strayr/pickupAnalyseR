@@ -76,7 +76,7 @@ vellemanReader <- function(filename, index=1){
     tableSlice=myData[start:end,]
     names(tableSlice)=stdNames(names(tableSlice))
     tableSlice$Freq <- as.numeric(as.character(tableSlice$Freq))
-    tableSlice$mVrms <- as.numeric(as.character(tableSlice$mVrms))
+    tableSlice$Volts <- as.numeric(as.character(tableSlice$Volts))
     tableSlice$Mag <- as.numeric(as.character(tableSlice$Mag))
     tableSlice$Phase <- as.numeric(as.character(tableSlice$Phase))
     aTable=tableSlice
