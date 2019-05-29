@@ -485,7 +485,7 @@ Pickup$methods(
     print(paste(manuf, name))
     print(paste(
       "Calculated Inductance:",
-      prettyNum(p$getInd(), format = "fg", digits = 3),
+      prettyNum(getInd(), format = "fg", digits = 3),
       "H"
     ))
     print(paste(
