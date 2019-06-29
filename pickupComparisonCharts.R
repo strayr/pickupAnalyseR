@@ -17,7 +17,7 @@ loadedRelPlot = function(pickupList,chartHeading="Unnamed", min= -70, max = 5, s
       panel.grid.minor.x = element_line(size = 0.2)
     ) +
     ylim(min, max) +
-    labs(title=paste(chartHeading,"- loaded 200k 470pf"), x="Frequency /Hz", y="Relative Magnetude (400-500Hz) /dB (-20db/Decade)", color="Pickup")
+    labs(title=paste(chartHeading,"- loaded 200k 470pf"), x="Frequency /Hz", y="Relative Magnetude (500-1000Hz) /dB (-20db/Decade)", color="Pickup")
   return(myPlot)
   
 }

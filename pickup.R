@@ -77,9 +77,12 @@ Pickup <- setRefClass(
     #use getIndRawPeak()
     ldRawPeak = "list",
     #use getLdRawPeak()
-    ulRawPeak = "list" #use getULRawPeak()
+    ulRawPeak = "list", #use getULRawPeak()
     
-    
+    #Count this many peaks to the left
+    LDOffset ="numeric",
+    ULOffset = "numeric"
+    # 
   )
 ) #End pickup def
 
@@ -301,10 +304,14 @@ Pickup$methods(
 )
 
 Pickup$methods(
-  getLDPeak = function() {
+  getLDPeak = function(){
+    offset=0
+    if(length(LDOffset)>0) {
+      offset=LDOffset
+    }
     peaks = getLDPeaks()
     trimPeaks = peaks[peaks$Freq < getLdRawPeak()$freq, ] #only want the peaks before the raw data spikes
-    return(tail(trimPeaks, n = 1)) # we want the last one
+    return(head( tail(trimPeaks, n = 1+offset), n=1 ) ) # we want the last but offseth one
   }
 )
 
@@ -317,9 +324,13 @@ Pickup$methods(
 
 Pickup$methods(
   getULPeak = function() {
+    offset=0
+    if(length(ULOffset)>0) {
+      offset=ULOffset
+    }
     peaks = getULPeaks()
     trimPeaks = peaks[peaks$Freq < getULRawPeak()$freq, ] #only want the peaks before the raw data spikes
-    return(tail(trimPeaks, n = 1)) # we want the last one
+    return(head( tail(trimPeaks, n = 1+offset), n=1 ) )  # we want the last one
   }
 )
 
