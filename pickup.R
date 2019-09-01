@@ -34,7 +34,7 @@ source (paste(libfolder, 'bodeUtils.R', sep = "/"))
 
 
 #TODO handle this
-defaultSmoothing <- 0.07
+defaultSmoothing <- 0.05
 defaultProbeCap <- 20 #in pF
 
 # I'm just defining fields here, methods can go in one at a time for code clarity

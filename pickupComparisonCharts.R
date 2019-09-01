@@ -7,10 +7,11 @@ library(purrr)
 
 # Returns an integrated plot of pickups tested under standard load.
 # Use for comparasons of audible frequency response
-loadedRelPlot = function(pickupList,chartHeading="Unnamed", min= -70, max = 5, smoothing=0.07) {
+loadedRelPlot = function(pickupList,chartHeading="Unnamed", min= -70, max = 5, smoothing=0.05) {
   meltedLoad=melt(map(pickupList, ~ .x$getLoadedPlotData("IntRelMag") ), id.vars="Freq", variable.name="pickupName")
   myPlot = ggplot(meltedLoad, aes(Freq,value)) +
     geom_smooth(mapping = aes(colour=pickupName) , span = smoothing) +
+    #geom_line(mapping = aes(colour=pickupName)) +
     scale_x_log10(minor_breaks = log10_minor_break()) +
     theme(
       panel.grid.major.x = element_line(size = 0.1),
