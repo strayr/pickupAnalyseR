@@ -1,39 +1,38 @@
 #Test-Driver for pickup
-libfolder<-"pickupAnalyseR"
-datafolder <- "GuitarAnalysisData/CGM/Bass"
+libfolder<-"."
 
 source(paste(libfolder, 'sysCompPickup.R', sep="/"))
 source(paste(libfolder, 'vellemanPickup.R', sep="/"))
 source(paste(libfolder, 'pickupComparisonCharts.R', sep="/"))
 
 
-datafolder <- "GuitarAnalysisData/CGM/Bass"
+datafolder <- "SampleData"
 
 smoothing <- 0.07
 
-chartHeading = "DiMarzio Super Family Pickups"
+chartHeading = "Test Pickups"
 
 ##
 # Load some pickup data. Expected are three .csv files from the SYSCOMP scope
 # with the -LD.csv -UL.csv and -IT.csv suffixes
 pickupList = c(
-  SysCompPickup(name = "Super 2",
-         manuf = "Dimarzio",
+  SysCompPickup(name = "Test 1",
+         manuf = "testmaker",
          mDCR = 8.44,
-         tableBase='GuitarAnalysisData/CGM/DiMarzio/Super2/Super2'),
-  SysCompPickup(name = "EVO",
-                manuf = "Dimarzio",
+         tableBase='SampleData/P22-A2'),
+  SysCompPickup(name = "Test 2",
+                manuf = "testnmaker",
                 mDCR = 8.44,
-                tableBase='GuitarAnalysisData/CGM/DiMarzio/EVO/EVO'),
-  SysCompPickup(name = "V2",
-                manuf = "Ibanez",
+                tableBase='SampleData/P22-A2'),
+  SysCompPickup(name = "Test 3",
+                manuf = "rival testmaker",
                 mDCR = 8.44,
-                tableBase='GuitarAnalysisData/CGM/Ibanez/RocketRoll/V2'),
+                tableBase='SampleData/P22-A2'),
   
-  VellemanPickup(name = "Super Distortion",
-                 manuf = "Dimarzio",
+  VellemanPickup(name = "velleman test",
+                 manuf = "testmaker",
                  mDCR = 16.0, 
-                 tableBase='GuitarAnalysisData/Velleman/dimarzio_super_dist-driver.txt',
+                 tableBase='SampleData/vell-2pass.txt',
                  unloadedIndex=1,
                  loadedIndex=2,
                  indIndex=1, # Blatant LIE

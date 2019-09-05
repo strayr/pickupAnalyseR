@@ -5,7 +5,7 @@
 
 ##
 # Import needed libraries
-libfolder<-"pickupAnalyseR"
+libfolder<-"."
 source(paste(libfolder, 'vellemanPickup.R', sep="/"))
 
 
@@ -16,10 +16,10 @@ source(paste(libfolder, 'vellemanPickup.R', sep="/"))
 
 #I'm using my own pickup as the default for this template.
 
-aPickup<-VellemanPickup(name = "Super Distortion",
-               manuf = "Dimarzio",
+aPickup<-VellemanPickup(name = "Test Pickup",
+               manuf = "TestMaker",
                mDCR = 16.0, 
-               tableBase='GuitarAnalysisData/Velleman/dimarzio_super_dist-driver.txt',
+               tableBase='SampleData/vell-2pass.txt',
                unloadedIndex=1,
                loadedIndex=2,
                indIndex=1, # Blatant LIE
@@ -28,7 +28,7 @@ aPickup<-VellemanPickup(name = "Super Distortion",
 
 
 print (aPickup$getRawPlot())
-print (aPickup$getIntPlot(min=-100, max=-74))
+print (aPickup$getIntPlot(min=-120, max=-80))
 print (aPickup$getRelPlot())
 
 aPickup$printData()

@@ -3,6 +3,7 @@
 if(!exists("libfolder")) {libfolder<-'.'}
 source (paste(libfolder, 'pickup.R', sep="/"))
 source (paste(libfolder, 'columnNames.R', sep="/"))
+source (paste(libfolder, 'DataImport/syscompReader.R', sep="/"))
 
 
 SysCompPickup <- setRefClass(
@@ -24,13 +25,9 @@ SysCompPickup$methods(
     ld <- paste0(fileStem, "-LD.csv")
     it <- paste0(fileStem, "-IT.csv")
     #print(ld)
-    ldTable=read.table(file = ld, sep=',', header = TRUE)
-    itTable=read.table(file = it, sep=',', header = TRUE)
-    ulTable=read.table(file = ul, sep=',', header = TRUE)
-    
-    names(ldTable)=stdNames(names(ldTable))
-    names(itTable)=stdNames(names(itTable))
-    names(ulTable)=stdNames(names(ulTable))
+    ldTable=syscompReader(ld)
+    itTable=syscompReader(it)
+    ulTable=syscompReader(ul)
     
     setLoaded(ldTable)
     setInduction(itTable)

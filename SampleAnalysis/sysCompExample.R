@@ -3,12 +3,12 @@
 # contain no logic beyond defining a piuckup and printing some data
 #
  
-datafolder<-"pickupAnalyseR/SingleAnalysis/SampleData"
+datafolder<-"SampleData"
 
 ##
 # Import needed libraries
 
-libfolder<-"pickupAnalyseR"
+libfolder<-"."
 source(paste(libfolder, 'sysCompPickup.R', sep="/"))
 #source(sysCompPickup.R)
 

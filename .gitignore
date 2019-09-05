@@ -6,4 +6,5 @@
 *.pdf
 ScopeData.Rproj
 PrivateAnalysis
+PrivateData
 csv

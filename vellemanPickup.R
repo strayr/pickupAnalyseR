@@ -1,7 +1,7 @@
 #vellemanPickup
 if(!exists("libfolder")) {libfolder<-'.'}
 source (paste(libfolder, 'pickup.R', sep="/"))
-#source (paste(libfolder, 'vellemanReader.R', sep="/"))
+source (paste(libfolder, 'DataImport/vellemanReader.R', sep="/"))
 #source (paste(libfolder, 'plotData.R', sep="/"))
 source (paste(libfolder, 'columnNames.R', sep="/"))
 
@@ -50,40 +50,40 @@ VellemanPickup$methods(
 
 ##
 # vellemanReader() Static function I only need here
-
-vellemanReader <- function(filename, index=1){
-  padding = 1
-  
-  myData = read.delim(filename)
-  print(length(myData[,1]))
-  startpoints = row.names (myData[which(myData$Hz == myData[1,]$Hz ), ])
-  
-  #if leng
-  tables = list()
-  
-  
-    start = as.numeric(startpoints[index])
-    
-    end=length(myData[,1])
-    if(index != length(startpoints)){
-      end =  as.numeric(startpoints[(index+1)]) - padding -1
-    }
-    
-    
-    
-    print(c(start, end))
-    
-    tableSlice=myData[start:end,]
-    names(tableSlice)=stdNames(names(tableSlice))
-    tableSlice$Freq <- as.numeric(as.character(tableSlice$Freq))
-    tableSlice$Volts <- as.numeric(as.character(tableSlice$Volts))
-    tableSlice$Mag <- as.numeric(as.character(tableSlice$Mag))
-    tableSlice$Phase <- as.numeric(as.character(tableSlice$Phase))
-    aTable=tableSlice
-    
-    
-  
-  
-  
-  return(aTable)
-}
+# 
+# vellemanReader <- function(filename, index = 1) {
+#   padding = 1
+#   
+#   myData = read.delim(filename)
+#   print(length(myData[, 1]))
+#   startpoints = row.names (myData[which(myData$Hz == myData[1, ]$Hz),])
+#   
+#   #if leng
+#   tables = list()
+#   
+#   
+#   start = as.numeric(startpoints[index])
+#   
+#   end = length(myData[, 1])
+#   if (index != length(startpoints)) {
+#     end =  as.numeric(startpoints[(index + 1)]) - padding - 1
+#   }
+#   
+#   
+#   
+#   print(c(start, end))
+#   
+#   tableSlice = myData[start:end, ]
+#   names(tableSlice) = stdNames(names(tableSlice))
+#   tableSlice$Freq <- as.numeric(as.character(tableSlice$Freq))
+#   tableSlice$Volts <- as.numeric(as.character(tableSlice$Volts))
+#   tableSlice$Mag <- as.numeric(as.character(tableSlice$Mag))
+#   tableSlice$Phase <- as.numeric(as.character(tableSlice$Phase))
+#   aTable = tableSlice
+#   
+#   
+#   
+#   
+#   
+#   return(aTable)
+# }

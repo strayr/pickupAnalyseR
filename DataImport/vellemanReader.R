@@ -1,36 +1,37 @@
-NOT USED
-NOT USED
-NOT USED
-DILIBERATELY BREEAKING THIS SO I CAN SEE THIS IS NOT USED
-IT's ALL in VellemanPickup
+#vellemanReader.R
 
 
-libfolder<-"pickupAnalyseR"
+
+if (!exists("libfolder")) {
+  libfolder <- '.'
+}
 source(paste(libfolder, 'columnNames.R', sep="/"))
 source(paste(libfolder, 'plotData.R', sep="/"))
 
-
-vellemanReader <- function(filename){
+# returns the plot between 
+vellemanReader <- function(filename, index=1){
   padding = 1
   
   myData = read.delim(filename)
-  print(length(myData[,1]))
+  if(exists("DEBUG")){print(length(myData[,1]))}
   startpoints = row.names (myData[which(myData$Hz == myData[1,]$Hz ), ])
   
   #if leng
   tables = list()
   
-  for (i in 1:(length(startpoints) ) ){
-    start = as.numeric(startpoints[i])
+  
+    start = as.numeric(startpoints[index])
     
     end=length(myData[,1])
-    if(i != length(startpoints)){
-      end =  as.numeric(startpoints[(i+1)]) - padding -1
+    if(length(startpoints) > index){
+      end =  as.numeric(startpoints[(index+1)]) - padding -1
     }
    
     
-    
-    print(c(start, end))
+    if(exists("DEBUG")){
+    print(c("start",start))
+    print(c("end",end))
+    }
     
     tableSlice=myData[start:end,]
     names(tableSlice)=stdNames(names(tableSlice))
@@ -38,13 +39,13 @@ vellemanReader <- function(filename){
     tableSlice$Volts <- as.numeric(as.character(tableSlice$Volts))
     tableSlice$Mag <- as.numeric(as.character(tableSlice$Mag))
     tableSlice$Phase <- as.numeric(as.character(tableSlice$Phase))
-    aTable=PlotData(table=tableSlice)
-    tables[i]= aTable
+    aTable<-(tableSlice)
+    #tables[i]= aTable
     
-  } 
   
   
-  return(tables)
+  
+  return(aTable)
 }
 
 # Test Driver
