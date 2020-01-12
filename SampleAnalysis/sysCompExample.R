@@ -2,15 +2,14 @@
 # Each pickup needs one of these to define a report. This should be as short as possible and 
 # contain no logic beyond defining a piuckup and printing some data
 #
- 
-datafolder<-"SampleData"
+
 
 ##
 # Import needed libraries
+source('sysCompPickup.R')
 
-libfolder<-"."
-source(paste(libfolder, 'sysCompPickup.R', sep="/"))
-#source(sysCompPickup.R)
+#not needed here
+#source('pickupComparisonCharts.R')
 
 
 
@@ -20,14 +19,83 @@ source(paste(libfolder, 'sysCompPickup.R', sep="/"))
 
 #I'm using my own pickup as the default for this template.
 
-aPickup=SysCompPickup(name = "P22",
-               manuf = "Straylight",
-               mDCR = 8.08,
-               tableBase=paste(datafolder,'P22-A2', sep="/")
-               )
+chartHeading = "Single coil Example"
 
-print (aPickup$getRawPlot())
-print (aPickup$getIntPlot())
-print (aPickup$getRelPlot())
+pickupList = c(
+  SysCompPickup(
+    name = "Evolution Bridge",
+    manuf = "Straylight",
+    mDCR = 12.36,
+    tableBase = 'PrivateData/CGM/Dimarzio/EVO/evoB/evo-hb',
+    LDOffset=0,
+    ULOffset=0
+  ),
+  SysCompPickup(
+    name = "Evo Bridge Old",
+    manuf = "Straylight",
+    mDCR = 12.36,
+    tableBase = 'PrivateData/CGM/Dimarzio/EVO/OLD/EVO',
+    LDOffset=0,
+    ULOffset=0
+  ),
+  SysCompPickup(
+    name = "Slugs",
+    manuf = "Straylight",
+    mDCR = 6.18,
+    tableBase = 'PrivateData/CGM/Dimarzio/EVO/evoB/evo-rb',
+    LDOffset=0,
+    ULOffset=0
+  ),
+  SysCompPickup(
+    name = "Screws",
+    manuf = "Straylight",
+    mDCR = 7.19,
+    tableBase = 'PrivateData/CGM/Dimarzio/EVO/evoB/evo-wg',
+    LDOffset=0,
+    ULOffset=0
+  ),
+  # SysCompPickup(
+  #   name = "Slugs, grounded screws",
+  #   manuf = "Straylight",
+  #   mDCR = 6.18,
+  #   tableBase = 'PrivateData/CGM/Dimarzio/EVO/evoB/evo-deadearth-rb',
+  #   LDOffset=0,
+  #   ULOffset=0
+  # ),
+  SysCompPickup(
+    name = "Parallel",
+    manuf = "Straylight",
+    mDCR = 6.18,
+    tableBase = 'PrivateData/CGM/Dimarzio/EVO/evoB/evo-parallel',
+    LDOffset=0,
+    ULOffset=0
+  )#,
+)
 
-aPickup$printData()
+q=pickupList[[1]]
+print (q$getRawPlot())
+
+for (p in pickupList) {
+  p$printData()
+  #print (p$getRawPlot())
+  print (p$getIntPlot(min=-70, max=-50))
+  #print (p$getRelPlot())
+}
+
+print(loadedAbsPlot(
+  pickupList,
+  chartHeading = chartHeading,
+  smoothing=0.05,
+  min = -70,
+  max = -50
+))
+
+print(loadedRelPlot(
+  pickupList,
+  chartHeading = chartHeading,
+  min = -4,
+  smoothing=0.08,
+  max = 4
+))
+
+
