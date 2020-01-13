@@ -7,4 +7,6 @@
 ScopeData.Rproj
 PrivateAnalysis
 PrivateData
+PublicData
 csv
+.Rprofile
