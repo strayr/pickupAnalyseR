@@ -15,9 +15,9 @@
 #For Graphing
 library(ggplot2)
 library(scales)
-library(ggpmisc)
+#library(ggpmisc)
 
-#For melting data- currently not used
+#For melting data
 library(purrr)
 library(reshape2)
 

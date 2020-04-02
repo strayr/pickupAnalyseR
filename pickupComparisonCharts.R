@@ -26,7 +26,7 @@ loadedRelPlot = function(pickupList,chartHeading="Unnamed", min= -70, max = 5, s
 
 # Returns an integrated plot of pickups tested under standard load.
 # Use for comparasons of pickup OUTPUT
-loadedAbsPlot = function(pickupList,chartHeading="Unnamed", min= -70, max = -50, smoothing=0.07) {
+loadedAbsPlot = function(pickupList,chartHeading="Unnamed",chartHead2="loaded 200k 470pf", min= -70, max = -50, smoothing=0.07) {
   meltedLoad=melt(map(pickupList, ~ .x$getLoadedPlotData("IntMag") ), id.vars="Freq", variable.name="pickupName")
   myPlot = ggplot(meltedLoad, aes(Freq,value)) +
     geom_smooth(mapping = aes(colour=pickupName) , span = smoothing) +
@@ -36,7 +36,7 @@ loadedAbsPlot = function(pickupList,chartHeading="Unnamed", min= -70, max = -50,
       panel.grid.minor.x = element_line(size = 0.2)
     ) +
     ylim(min, max) +
-    labs(title=paste(chartHeading,"- loaded 200k 470pf"), x="Frequency /Hz", y="Magnetude /dB (-20db/Decade)", color="Pickup")
+    labs(title=paste(chartHeading," - ",chartHead2), x="Frequency /Hz", y="Magnetude /dB (-20db/Decade)", color="Pickup")
   return(myPlot)
   
 }

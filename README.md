@@ -13,3 +13,10 @@ History
 
 This started from discussions on GuitarNuts on analysing the frequency response of guitar pickups.
 
+Dependancies
+============
+tidyverse 
+quantmod
+purrr
+
+#ggpmisc mo longer used 
