@@ -25,11 +25,11 @@ library(reshape2)
 library(quantmod)
 
 #I have some packages of useful functions that I should probably internalise here
-if (!exists("libfolder")) {
-  libfolder <- '.'
-}
-source (paste(libfolder, 'indexutil.R', sep = "/"))
-source (paste(libfolder, 'bodeUtils.R', sep = "/"))
+# if (!exists("libfolder")) {
+#   libfolder <- '.'
+# }
+source ('indexutil.R')
+source ('bodeUtils.R')
 
 
 

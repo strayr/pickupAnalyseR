@@ -1,13 +1,13 @@
 #SysCompPickup
 
-if(!exists("libfolder")) {libfolder<-'.'}
-source (paste(libfolder, 'pickup.R', sep="/"))
-source (paste(libfolder, 'columnNames.R', sep="/"))
-source (paste(libfolder, 'DataImport/syscompReader.R', sep="/"))
+#if(!exists("libfolder")) {libfolder<-'.'}
+source ('pickup.R')
+source ('columnNames.R')
+source ('DataImport/syscompReader.R')
 
 
 SysCompPickup <- setRefClass(
-  "SyscompPickup",
+  "SysCompPickup",
   contains="Pickup"
 )
 
