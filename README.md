@@ -16,7 +16,11 @@ This started from discussions on GuitarNuts on analysing the frequency response 
 Dependancies
 ============
 tidyverse 
-quantmod
-purrr
+ggplot2 (in tidyverse)
+scales  (in tidyverse)
 
-#ggpmisc mo longer used 
+For melting data:
+purrr  (in tidyverse)
+reshape2
+
+quantmod
