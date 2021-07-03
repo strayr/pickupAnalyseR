@@ -28,8 +28,9 @@ library(quantmod)
 # if (!exists("libfolder")) {
 #   libfolder <- '.'
 # }
-source ('indexutil.R')
-source ('bodeUtils.R')
+if(!exists("libfolder")) {libfolder<-'.'}
+source(paste(libfolder,"indexutil.R", sep = "/"))
+source(paste(libfolder,"bodeUtils.R", sep = "/"))
 
 
 
@@ -48,21 +49,21 @@ Pickup <- setRefClass(
     #hasInd = "logical",        #Not Using
     #tableBase = "character",
     smoothing = "numeric",
-    
+
     #The big unweildy data from datalogger or SPICE
     loaded = "data.frame",
     unloaded = "data.frame",
     induction = "data.frame",
-    
+
     # #Analysis hints
     # ldHasEddy="logical",
     # ldHasResonance="logical",
     # ulHasEddy="logical",
     # ulHasResonance="logical",
-    
+
     #Measured Values
     mDCR = "numeric",
-    
+
     #caluclatable values
     #Set to -1 if not calculated or able to be calculated
     #Setting data tables and get* methods attempt calculation
@@ -70,19 +71,19 @@ Pickup <- setRefClass(
     #use getCap()
     cInd = "numeric",
     #use getInd()
-    
-    
+
+
     #Store the peaks from the raw plots, this is calculated and cached data so use the accessors
     indRawPeak = "list",
     #use getIndRawPeak()
     ldRawPeak = "list",
     #use getLdRawPeak()
     ulRawPeak = "list", #use getULRawPeak()
-    
+
     #Count this many peaks to the left
     LDOffset ="numeric",
     ULOffset = "numeric"
-    # 
+    #
   )
 ) #End pickup def
 
@@ -192,7 +193,7 @@ Pickup$methods(
       indRawPeak <<- inF
       return (cInd)
     }
-    
+
   }
 )
 
@@ -208,7 +209,7 @@ Pickup$methods(
       ulRawPeak <<- ulF
       return (cCap)
     }
-    
+
   }
 )
 
@@ -221,7 +222,7 @@ Pickup$methods(
       ldRawPeak <<- priSimplePeak(loaded)
       return (ldRawPeak)
     }
-    
+
   }
 )
 
@@ -234,7 +235,7 @@ Pickup$methods(
       getCap() #Yes bad design, needs refactoring
       return (ulRawPeak)
     }
-    
+
   }
 )
 ## Accessor getULRawPeak
@@ -246,7 +247,7 @@ Pickup$methods(
       getInd() #Yes bad design, needs refactoring
       return (indRawPeak)
     }
-    
+
   }
 )
 
@@ -262,7 +263,7 @@ Pickup$methods(
     # print(head (lOut)) #debug
     return(lOut)
   }
-  
+
 )
 
 Pickup$methods(
@@ -272,7 +273,7 @@ Pickup$methods(
     # print(head (lOut)) #debug
     return(lOut)
   }
-  
+
 )
 
 Pickup$methods(
@@ -348,7 +349,7 @@ Pickup$methods(
         panel.grid.major.x = element_line(size = 0.1),
         panel.grid.minor.x = element_line(size = 0.2)
       ) +
-      
+
       geom_line(mapping = aes(x = Freq , y = IntMag)) +
       geom_smooth(mapping = aes(x = Freq , y = IntMag),
                   span = smoothing) +
@@ -359,12 +360,12 @@ Pickup$methods(
         span = smoothing,
         colour = "red"
       ) +
-      
+
       geom_vline(xintercept = getLDPeak()$Freq, colour = "red") +
       geom_vline(xintercept = getLDCutoff(), colour = "red") +
       geom_vline(xintercept = getULPeak()$Freq, colour = "blue") +
       geom_vline(xintercept = getULCutoff(), colour = "blue") +
-      
+
       #Add "raw" data
       geom_vline(xintercept = getLdRawPeak()$freq,
                  colour = "red",
@@ -372,9 +373,9 @@ Pickup$methods(
       geom_vline(xintercept = getULRawPeak()$freq,
                  colour = "blue",
                  linetype = "dashed") +
-      
-      
-      
+
+
+
       ylim(min, max) +
       ggtitle(paste(manuf, name), "Integrated") +
       xlab("Frequency /Hz") +
@@ -391,7 +392,7 @@ Pickup$methods(
         panel.grid.major.x = element_line(size = 0.1),
         panel.grid.minor.x = element_line(size = 0.2)
       ) +
-      
+
       geom_line(mapping = aes(x = Freq , y = IntRelMag)) +
       geom_smooth(mapping = aes(x = Freq , y = IntRelMag),
                   span = smoothing) +
@@ -402,12 +403,12 @@ Pickup$methods(
         span = smoothing,
         colour = "red"
       ) +
-      
+
       geom_vline(xintercept = getLDPeak()$Freq, colour = "red") +
       geom_vline(xintercept = getLDCutoff(), colour = "red") +
       geom_vline(xintercept = getULPeak()$Freq, colour = "blue") +
       geom_vline(xintercept = getULCutoff(), colour = "blue") +
-      
+
       #Add "raw" data
       geom_vline(xintercept = getLdRawPeak()$freq,
                  colour = "red",
@@ -415,9 +416,9 @@ Pickup$methods(
       geom_vline(xintercept = getULRawPeak()$freq,
                  colour = "blue",
                  linetype = "dashed") +
-      
-      
-      
+
+
+
       ylim(min, max) +
       ggtitle(paste(manuf, name, "Integrated")) +
       xlab("Frequency /Hz") +
@@ -438,10 +439,10 @@ Pickup$methods(
         panel.grid.major.x = element_line(size = 0.1),
         panel.grid.minor.x = element_line(size = 0.2)
       ) +
-      
+
       geom_line(mapping = aes(x = Freq , y = Mag)) +
       geom_smooth(mapping = aes(x = Freq , y = Mag) , span = smoothing) +
-      
+
       geom_line(data = induction, mapping = aes(x = Freq , y = Mag)) +
       geom_smooth(
         data = induction,
@@ -449,7 +450,7 @@ Pickup$methods(
         span = smoothing,
         colour = "green"
       ) +
-      
+
       geom_line(data = loaded, mapping = aes(x = Freq , y = Mag)) +
       geom_smooth(
         data = loaded,
@@ -457,7 +458,7 @@ Pickup$methods(
         span = smoothing,
         colour = "red"
       ) +
-      
+
       #Dashed data from integrated plot
       geom_vline(xintercept = getLDPeak()$Freq,
                  colour = "red",
@@ -471,18 +472,18 @@ Pickup$methods(
       geom_vline(xintercept = getULCutoff(),
                  colour = "blue",
                  linetype = "dashed") +
-      
+
       geom_vline(xintercept = getLdRawPeak()$freq, colour = "red") +
       geom_vline(xintercept = getULRawPeak()$freq, colour = "blue") +
       geom_vline(xintercept = getIndRawPeak()$freq, colour = "green") +
-      
-      
-      
+
+
+
       #ylim(min, max) +
       ggtitle(paste(manuf, name, "Raw")) +
       xlab("Frequency /Hz") +
       ylab("Magnetude /dB")
-    
+
     if((min!=-1) | (max!=-1)) {
       myPlot = myPlot + ylim(min, max)
     }
@@ -573,7 +574,7 @@ Pickup$methods(
       ),
       "dB"
     ))
-    
+
   }
 )
 
